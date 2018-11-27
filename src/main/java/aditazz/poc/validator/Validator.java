@@ -1,4 +1,4 @@
-package aditaazz.poc.validator;
+package aditazz.poc.validator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import aditaazz.poc.constants.AditaazzConstants;
-import aditaazz.poc.enums.JsonFields;
+import aditazz.poc.constants.AditazzConstants;
+import aditazz.poc.enums.JsonFields;
 
 /**
  * 
@@ -58,8 +58,8 @@ public class Validator {
 				logger.info("Number of equipments are not equal");
 			}
 	    	
-	    	result.put(AditaazzConstants.LINES_EQUAL, isLinesEqual);
-	    	result.put(AditaazzConstants.EQUIPMENT_EQUAL, isEquipmentEqual);
+	    	result.put(AditazzConstants.LINES_EQUAL, isLinesEqual);
+	    	result.put(AditazzConstants.EQUIPMENT_EQUAL, isEquipmentEqual);
 		} catch (Exception e) {
 			logger.error("Exception occurred while comparing pfd and plan "+e.getMessage(),e);
 		}

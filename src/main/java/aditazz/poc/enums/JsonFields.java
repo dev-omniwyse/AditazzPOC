@@ -1,4 +1,4 @@
-package aditaazz.poc.enums;
+package aditazz.poc.enums;
 
 /**
  * 

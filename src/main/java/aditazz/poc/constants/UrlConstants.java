@@ -1,4 +1,4 @@
-package aditaazz.poc.constants;
+package aditazz.poc.constants;
 /**
  * 
  * @author      : Sreekhar Reddy.K

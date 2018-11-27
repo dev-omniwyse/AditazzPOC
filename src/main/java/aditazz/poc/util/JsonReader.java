@@ -1,4 +1,4 @@
-package aditaazz.poc.util;
+package aditazz.poc.util;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,7 +12,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import aditaazz.poc.enums.JsonFields;
+import aditazz.poc.enums.JsonFields;
 /**
  * 
  * Author : Sreekhar Reddy.K

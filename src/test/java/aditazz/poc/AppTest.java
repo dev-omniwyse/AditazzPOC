@@ -1,4 +1,4 @@
-package aditaazz.poc;
+package aditazz.poc;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,11 +11,11 @@ import org.junit.Test;
 
 import com.google.gson.JsonObject;
 
-import aditaazz.poc.constants.AditaazzConstants;
-import aditaazz.poc.service.AditaazzService;
-import aditaazz.poc.service.AuthenticationService;
-import aditaazz.poc.util.JsonReader;
-import aditaazz.poc.validator.Validator;
+import aditazz.poc.constants.AditazzConstants;
+import aditazz.poc.service.AditazzService;
+import aditazz.poc.service.AuthenticationService;
+import aditazz.poc.util.JsonReader;
+import aditazz.poc.validator.Validator;
 import junit.framework.TestCase;
 
 /**
@@ -43,14 +43,14 @@ public class AppTest {
     public static void initialize() throws IOException {
 		Properties appProps=new Properties();
 		appProps.load(TestCase.class.getClassLoader().getResourceAsStream("application.properties"));
-		AditaazzService aditaazzService=new AditaazzService();
+		AditazzService aditazzService=new AditazzService();
 		AuthenticationService authenticationService=new AuthenticationService();
 		String authToken=authenticationService.getAuthenticationToken(appProps.getProperty("username"), appProps.getProperty("password"));
 		String optionId="00000000-5bf3-9ef8-797f-070010c84b2b";
 		String planId="00000000-5bf3-9ef8-797f-070010c84b2a";
 		JsonReader jsonReader=new JsonReader();
 		pfdObject=jsonReader.getPfdObject("/"+optionId+"_pfd.json");
-		planObject=aditaazzService.getPlan(authToken, planId);
+		planObject=aditazzService.getPlan(authToken, planId);
 		Validator validator=new Validator();
     	result=validator.validatePlanAndPfd(pfdObject, planObject);
     }
@@ -64,11 +64,11 @@ public class AppTest {
 	 */
 	@Test
     public void isLinesEqual() {
-    	assertEquals("Lines are equal.",true,result.get(AditaazzConstants.LINES_EQUAL).booleanValue() );
+    	assertEquals("Lines are equal.",true,result.get(AditazzConstants.LINES_EQUAL).booleanValue() );
     }
 	
 	@Test
 	public void isEquipmentsEqual() {
-		assertEquals("Equipments are equal.",true,result.get(AditaazzConstants.EQUIPMENT_EQUAL).booleanValue() );
+		assertEquals("Equipments are equal.",true,result.get(AditazzConstants.EQUIPMENT_EQUAL).booleanValue() );
 	}
 }

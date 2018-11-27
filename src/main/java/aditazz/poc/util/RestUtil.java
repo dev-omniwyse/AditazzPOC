@@ -1,4 +1,4 @@
-package aditaazz.poc.util;
+package aditazz.poc.util;
 
 import java.util.Collections;
 
@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.JsonObject;
 
-import aditaazz.poc.constants.UrlConstants;
+import aditazz.poc.constants.UrlConstants;
 
 /**
  * 

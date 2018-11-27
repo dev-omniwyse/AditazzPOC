@@ -1,26 +1,26 @@
-package aditaazz.poc.service;
+package aditazz.poc.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonObject;
 
-import aditaazz.poc.constants.AditaazzConstants;
-import aditaazz.poc.constants.UrlConstants;
-import aditaazz.poc.enums.JsonFields;
-import aditaazz.poc.util.JsonReader;
-import aditaazz.poc.util.RestUtil;
-import aditaazz.poc.validator.Validator;
+import aditazz.poc.constants.AditazzConstants;
+import aditazz.poc.constants.UrlConstants;
+import aditazz.poc.enums.JsonFields;
+import aditazz.poc.util.JsonReader;
+import aditazz.poc.util.RestUtil;
+import aditazz.poc.validator.Validator;
 
 /**
  * 
  * @author      : Sreekhar Reddy.K
  * @version     : Java 1.8 
  * @createdOn   : 26-Nov-2018 11:01:04 AM
- * @description : The class AditaazzService.java used for process pfd and plan
+ * @description : The class AditazzService.java used for process pfd and plan
  */
-public class AditaazzService {
-	private static final Logger logger = LoggerFactory.getLogger(AditaazzService.class);
+public class AditazzService {
+	private static final Logger logger = LoggerFactory.getLogger(AditazzService.class);
 	
 	/**
 	 * 
@@ -41,7 +41,7 @@ public class AditaazzService {
 			JsonObject jsonObject=jsonReader.getPfdObject("/"+optionId+"_pfd.json");
 			String pfdResponce = generatePlan(UrlConstants.PFD_URL+"&project_id="+projectId, authToken,optionId);
 			
-			if (AditaazzConstants.COMPLETED_STATUS.equalsIgnoreCase(pfdResponce)){
+			if (AditazzConstants.COMPLETED_STATUS.equalsIgnoreCase(pfdResponce)){
 				JsonObject planObject = getPlan(authToken,planId);
 				logger.info("Plan Object : {} " , planObject);
 				validator.validatePlanAndPfd(jsonObject, planObject);
@@ -85,7 +85,7 @@ public class AditaazzService {
 		String status = null;
 		while (true) {
 			status = getStatusByTicketId(output.get(JsonFields.ID.getValue()).getAsString(), authToken);
-			if (AditaazzConstants.COMPLETED_STATUS.equalsIgnoreCase(status)) {
+			if (AditazzConstants.COMPLETED_STATUS.equalsIgnoreCase(status)) {
 				break;
 			}
 			logger.info("Ticket Status : {} " ,status);

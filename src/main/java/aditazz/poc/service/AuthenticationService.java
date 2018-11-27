@@ -1,4 +1,4 @@
-package aditaazz.poc.service;
+package aditazz.poc.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,8 +6,8 @@ import org.springframework.util.Base64Utils;
 
 import com.google.gson.JsonObject;
 
-import aditaazz.poc.enums.JsonFields;
-import aditaazz.poc.util.RestUtil;
+import aditazz.poc.enums.JsonFields;
+import aditazz.poc.util.RestUtil;
 
 /**
  * 
