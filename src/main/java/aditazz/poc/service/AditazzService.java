@@ -24,33 +24,60 @@ public class AditazzService {
 	
 	/**
 	 * 
-	 * @name : processPFD
-	 * @description : The Method "processPFD" is used for process pfd and generating plan 
-	 * @date : 26-Nov-2018 11:01:44 AM
+	 * @name : process
+	 * @description : The Method "process" is used for process the pfd and plan
+	 * @date : 27-Nov-2018 1:51:12 PM
+	 * @param projectId
 	 * @param optionId
-	 * @param planId
 	 * @param authToken
 	 * @return : void
 	 *
 	 */
-	public void processPFD(String projectId,String optionId,String planId,String authToken) {
+	public void process(String projectId,String optionId,String authToken) {
 		try {
 			JsonReader jsonReader=new JsonReader();
-			Validator validator=new Validator();
 			logger.info("Authentication token : {}" , authToken);
-			JsonObject jsonObject=jsonReader.getPfdObject("/"+optionId+"_pfd.json");
-			String pfdResponce = generatePlan(UrlConstants.PFD_URL+"&project_id="+projectId, authToken,optionId);
+			JsonObject jsonObject=getPlanAndOptionId(authToken, optionId);
+			String pfdId=jsonObject.get(JsonFields.PFD_ID.getValue()).getAsString();
+			String planId=jsonObject.get(JsonFields.PLAN_ID.getValue()).getAsString();
+			logger.info("Pfd id :: {} \t Plan id :: {}",pfdId,planId);
+			JsonObject pfdObject=getPfdObject(authToken, pfdId);
+			processPFD(authToken, planId, optionId, projectId, pfdObject,pfdId);
 			
-			if (AditazzConstants.COMPLETED_STATUS.equalsIgnoreCase(pfdResponce)){
-				JsonObject planObject = getPlan(authToken,planId);
-				logger.info("Plan Object : {} " , planObject);
-				validator.validatePlanAndPfd(jsonObject, planObject);
-			}
+			
+			JsonObject newPfdObject=jsonReader.getPfdObject("/"+optionId+"_newpfd.json");
+			processPFD(authToken, planId, optionId, projectId, newPfdObject,pfdId);
 
 		}  catch (Exception e) {
 			logger.error("Exception occured due to :: "+e.getMessage(),e);
 		}
 	}
+	/**
+	 * 
+	 * @name : processPFD
+	 * @description : The Method "processPFD" is used for update and validate plan and pfd values.
+	 * @date : 27-Nov-2018 1:51:17 PM
+	 * @param authToken
+	 * @param planId
+	 * @param optionId
+	 * @param projectId
+	 * @param pfdObject
+	 * @param pfdId
+	 * @return : void
+	 *
+	 */
+	public void processPFD(String authToken,String planId,String optionId,String projectId,JsonObject pfdObject,String pfdId) {
+		JsonObject jsonObject=updatePFD(authToken, pfdObject, pfdId);
+		logger.info("Update pfd response is :: {}",jsonObject);
+		String status = generatePlan(UrlConstants.PLAN_PUT_URL+"&project_id="+projectId, authToken,optionId);
+		Validator validator=new Validator();
+		if (AditazzConstants.COMPLETED_STATUS.equalsIgnoreCase(status)){
+			JsonObject planObject = getPlan(authToken,planId);
+			logger.info("Plan Object : {} " , planObject);
+			validator.validatePlanAndPfd(pfdObject, planObject);
+		}
+	}
+	
 	/**
 	 * 
 	 * @name : getPlan
@@ -127,5 +154,60 @@ public class AditazzService {
 		JsonObject jsonObject=new JsonObject();
 		jsonObject.add(JsonFields.EQUIPMENT.getValue(), new JsonObject());
 		return jsonObject;
+	}
+	/**
+	 * 
+	 * @name : updatePFD
+	 * @description : The Method "updatePFD" is used for update pfd based on pfdId 
+	 * @date : 27-Nov-2018 12:38:59 PM
+	 * @param authToken
+	 * @param pfdObject
+	 * @param pfdId
+	 * @return
+	 * @return : JsonObject
+	 *
+	 */
+	public JsonObject updatePFD(String authToken,JsonObject pfdObject,String pfdId) {
+		return RestUtil.putObject(authToken, pfdObject, UrlConstants.PFD_URL+pfdId);
+	}
+	/**
+	 * 
+	 * @name : getPlanAndOptionId
+	 * @description : The Method "getPlanAndOptionId" is used for getting plan id and pfd id. 
+	 * @date : 27-Nov-2018 12:54:50 PM
+	 * @param authToken
+	 * @param optionId
+	 * @return
+	 * @return : JsonObject
+	 *
+	 */
+	public JsonObject getPlanAndOptionId(String authToken,String optionId) {
+		JsonObject jsonObject=new JsonObject();
+		JsonObject responseObject=RestUtil.getObject(authToken, null, UrlConstants.OPTIONS_URL+optionId);
+		logger.info("Option Json :: {}",responseObject);
+		JsonObject optionObject=responseObject.get(JsonFields.OPTIONS.getValue()).getAsJsonArray().get(0).getAsJsonObject();
+		JsonObject payloadObj=optionObject.get(JsonFields.PAYLOAD.getValue()).getAsJsonObject();
+		JsonObject pfdObj=payloadObj.get(JsonFields.PFD.getValue()).getAsJsonObject();
+		jsonObject.add(JsonFields.PFD_ID.getValue(), pfdObj.get(JsonFields.ID.getValue()));
+		JsonObject planObj=payloadObj.get(JsonFields.PLAN.getValue()).getAsJsonObject();
+		jsonObject.add(JsonFields.PLAN_ID.getValue(), planObj.get(JsonFields.ID.getValue()));
+		return jsonObject;
+	}
+	
+	/**
+	 * 
+	 * @name : getPfdObject
+	 * @description : The Method "getPfdObject" is used for 
+	 * @date : 27-Nov-2018 1:52:03 PM
+	 * @param authToken
+	 * @param pfdId
+	 * @return
+	 * @return : JsonObject
+	 *
+	 */
+	public JsonObject getPfdObject(String authToken,String pfdId) {
+		JsonObject jsonObject=RestUtil.getObject(authToken, null, UrlConstants.PFD_URL+pfdId);
+		logger.info("Pfd json :: {} ",jsonObject);
+		return jsonObject.get(JsonFields.PFDS.getValue()).getAsJsonArray().get(0).getAsJsonObject();
 	}
 }

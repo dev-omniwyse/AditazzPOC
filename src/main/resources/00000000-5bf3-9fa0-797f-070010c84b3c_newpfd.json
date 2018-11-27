@@ -1,0 +1,372 @@
+
+    {
+      "_id": "5bf3a048797f070010c84b43",
+      "id": "00000000-5bf3-9f9f-797f-070010c84b39",
+      "tenant_id": 2,
+      "revision": {
+        "deleted": false,
+        "created_at": "2018-11-20T05:48:56.096Z",
+        "notes": [],
+        "user_id": "00000000-5be1-c547-c3e2-ba0018444c66",
+        "id": 7
+      },
+      "payload": {
+        "equipment": {
+          "705c0952-7794-da66-6383-c4fada446c88": {
+            "type": "BR",
+            "dimensions": [],
+            "id": "BI",
+            "x": 407,
+            "y": 417,
+            "errors": {
+              "idErr": false,
+              "dimErr": false
+            },
+            "isResizing": false,
+            "grid": {
+              "dimensions": [
+                20,
+                3
+              ],
+              "lastDimensions": [
+                20,
+                3
+              ]
+            },
+            "area": 0,
+            "elevation": 0,
+            "occupiedNozzles": [
+              "705c0952-7794-da66-6383-c4fada446c88right1"
+            ],
+            "nozzlesToReconciliate": []
+          },
+          "69ad42cd-a524-fe62-3177-f5c23270fadb": {
+            "type": "P",
+            "dimensions": [
+              1,
+              1,
+              1
+            ],
+            "id": "P0",
+            "count": 1,
+            "x": 451,
+            "y": 418,
+            "errors": {
+              "dimErr": false
+            },
+            "isResizing": false,
+            "grid": {
+              "dimensions": [
+                9,
+                10
+              ],
+              "lastDimensions": [
+                9,
+                10
+              ]
+            },
+            "area": 0,
+            "elevation": 0,
+            "occupiedNozzles": [
+              "69ad42cd-a524-fe62-3177-f5c23270fadbleft0",
+              "69ad42cd-a524-fe62-3177-f5c23270fadbright1"
+            ],
+            "nozzlesToReconciliate": []
+          },
+          "8fa947ff-c4b2-c92e-0792-71e1fb247b26": {
+            "type": "V",
+            "dimensions": [
+              2,
+              2,
+              6
+            ],
+            "id": "V0",
+            "count": 2,
+            "x": 487,
+            "y": 414,
+            "errors": {
+              "dimErr": false
+            },
+            "isResizing": false,
+            "grid": {
+              "dimensions": [
+                5,
+                20
+              ],
+              "lastDimensions": [
+                5,
+                20
+              ]
+            },
+            "occupiedNozzles": [
+              "8fa947ff-c4b2-c92e-0792-71e1fb247b26bottom1",
+              "8fa947ff-c4b2-c92e-0792-71e1fb247b26right9"
+            ],
+            "dragging": false,
+            "lastX": 487,
+            "lastY": 415,
+            "bootDimensions": null,
+            "area": 0,
+            "elevation": 2,
+            "grouping": true,
+            "nozzlesToReconciliate": []
+          },
+          "cd041267-a8a0-7594-b3f4-8c9887c4e1d1": {
+            "type": "BL",
+            "dimensions": [],
+            "id": "BI",
+            "x": 536,
+            "y": 422,
+            "errors": {
+              "idErr": false,
+              "dimErr": false
+            },
+            "isResizing": false,
+            "grid": {
+              "dimensions": [
+                20,
+                3
+              ],
+              "lastDimensions": [
+                20,
+                3
+              ]
+            },
+            "occupiedNozzles": [
+              "cd041267-a8a0-7594-b3f4-8c9887c4e1d1left1"
+            ],
+            "dragging": false,
+            "lastX": 536,
+            "lastY": 424,
+            "bootDimensions": null,
+            "area": 0,
+            "elevation": 0,
+            "grouping": false
+          },
+          "72f2a816-d808-ece4-0556-af936a27d6ee": {
+            "type": "HE",
+            "dimensions": [
+              3,
+              3,
+              2
+            ],
+            "id": "HE0",
+            "count": 1,
+            "x": 523,
+            "y": 444,
+            "errors": {
+              "dimErr": false
+            },
+            "isResizing": false,
+            "grid": {
+              "dimensions": [
+                6,
+                6
+              ],
+              "lastDimensions": [
+                6,
+                6
+              ]
+            },
+            "occupiedNozzles": [
+              "72f2a816-d808-ece4-0556-af936a27d6eeleft0",
+              "72f2a816-d808-ece4-0556-af936a27d6eeright1"
+            ],
+            "dragging": false,
+            "lastX": 547,
+            "lastY": 442,
+            "bootDimensions": null,
+            "area": 0,
+            "elevation": 0,
+            "nozzlesToReconciliate": []
+          }
+        },
+        "lines": {
+          "121edb8f-7517-8dc9-81fe-8002c1198fa9": {
+            "uuid": "121edb8f-7517-8dc9-81fe-8002c1198fa9",
+            "id": "L0001",
+            "errors": {
+              "idErr": false
+            },
+            "source": {
+              "uuid": "705c0952-7794-da66-6383-c4fada446c88",
+              "side": "right",
+              "type": "interface",
+              "position": [
+                1,
+                0.3333333333333333
+              ],
+              "nozzle": "705c0952-7794-da66-6383-c4fada446c88right1"
+            },
+            "drawing": false,
+            "target": {
+              "uuid": "69ad42cd-a524-fe62-3177-f5c23270fadb",
+              "side": "left",
+              "type": "equipment",
+              "position": [
+                0,
+                0.5
+              ],
+              "nozzle": "69ad42cd-a524-fe62-3177-f5c23270fadbleft0"
+            },
+            "path": [
+              [
+                427,
+                418
+              ],
+              [
+                447,
+                418
+              ],
+              [
+                447,
+                423
+              ],
+              [
+                451,
+                423
+              ]
+            ],
+            "length": 30,
+            "pipeID": "PPXC156"
+          },
+          "f704f4f6-b0ed-870f-4024-2233cb1b415d": {
+            "uuid": "f704f4f6-b0ed-870f-4024-2233cb1b415d",
+            "id": "L0002",
+            "straight": false,
+            "errors": {
+              "idErr": false
+            },
+            "source": {
+              "uuid": "69ad42cd-a524-fe62-3177-f5c23270fadb",
+              "side": "right",
+              "type": "equipment",
+              "position": [
+                1,
+                0.5
+              ],
+              "nozzle": "69ad42cd-a524-fe62-3177-f5c23270fadbright1"
+            },
+            "drawing": false,
+            "target": {
+              "uuid": "8fa947ff-c4b2-c92e-0792-71e1fb247b26",
+              "side": "bottom",
+              "type": "equipment",
+              "position": [
+                0.5,
+                1
+              ],
+              "nozzle": "8fa947ff-c4b2-c92e-0792-71e1fb247b26bottom1"
+            },
+            "path": [
+              [
+                460,
+                423
+              ],
+              [
+                484,
+                423
+              ],
+              [
+                484,
+                436
+              ],
+              [
+                490,
+                436
+              ],
+              [
+                490,
+                434
+              ]
+            ],
+            "length": 46,
+            "pipeID": "PPXC39349"
+          },
+          "593cc152-de92-0aa6-7e10-3df22051140d": {
+            "uuid": "593cc152-de92-0aa6-7e10-3df22051140d",
+            "id": "L0003",
+            "straight": false,
+            "errors": {
+              "idErr": false
+            },
+            "source": {
+              "uuid": "8fa947ff-c4b2-c92e-0792-71e1fb247b26",
+              "side": "right",
+              "type": "equipment",
+              "position": [
+                1,
+                0.45
+              ],
+              "nozzle": "8fa947ff-c4b2-c92e-0792-71e1fb247b26right9"
+            },
+            "drawing": false,
+            "target": {
+              "uuid": "cd041267-a8a0-7594-b3f4-8c9887c4e1d1",
+              "side": "left",
+              "type": "interface",
+              "position": [
+                0,
+                0.3333333333333333
+              ],
+              "nozzle": "cd041267-a8a0-7594-b3f4-8c9887c4e1d1left1"
+            },
+            "path": [
+              [
+                492,
+                423
+              ],
+              [
+                536,
+                423
+              ]
+            ],
+            "length": 45,
+            "pipeID": "PPXC39349"
+          },
+          "a0e3103b-f72f-2204-d469-23a56baed91b": {
+            "uuid": "a0e3103b-f72f-2204-d469-23a56baed91b",
+            "id": "L0004",
+            "straight": false,
+            "errors": {
+              "idErr": false
+            },
+            "source": {
+              "uuid": "cd041267-a8a0-7594-b3f4-8c9887c4e1d1",
+              "side": "right",
+              "type": "interface",
+              "position": [
+                1,
+                0.3333333333333333
+              ],
+              "nozzle": "49b8a991-8fea-9ef7-737e-aa772bbf98c3right1"
+            },
+            "drawing": false,
+            "target": {
+              "uuid": "72f2a816-d808-ece4-0556-af936a27d6ee",
+              "side": "left",
+              "type": "equipment",
+              "position": [
+                0,
+                0.5
+              ],
+              "nozzle": "72f2a816-d808-ece4-0556-af936a27d6eeleft0"
+            },
+            "path": [
+              [
+                477,
+                447
+              ],
+              [
+                523,
+                447
+              ]
+            ],
+            "length": 47,
+            "dragging": false,
+            "pipeID": "PPXC120"
+          }
+        }
+      }
+    }
+ 

@@ -16,7 +16,12 @@ public enum JsonFields {
 	LINES("lines"),
 	PATHS("paths"),
 	ACCESS_TOKEN("accessToken"),  
-    EQUIPMENT("equipment") ;
+    EQUIPMENT("equipment"),
+    OPTIONS("options"),
+    PFD_ID("pfdid"),
+    PLAN_ID("planid"),
+    PFD("pfd"),
+    PLAN("plan"),;
 	
 
     private final String value;

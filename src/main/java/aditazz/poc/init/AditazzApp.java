@@ -31,9 +31,9 @@ public class AditazzApp {
 		Properties properties=new Properties();
 		properties.load(AditazzApp.class.getClassLoader().getResourceAsStream("option_plan.properties"));
 		for(Entry<Object, Object> entry : properties.entrySet()) {
-			logger.info("Process started with Option id :: {}\t Plan id :: {} ",entry.getKey(),entry.getValue());
-			aditazzService.processPFD(projectId,entry.getKey().toString(),entry.getValue().toString(),authToken);
-			logger.info("Process ended with Option id :: {}\t Plan id :: {} ",entry.getKey(),entry.getValue());
+			logger.info("Process started with Option id :: {}\t ",entry.getKey());
+			aditazzService.process(projectId,entry.getKey().toString(),authToken);
+			logger.info("Process ended with Option id :: {}\t ",entry.getKey());
 			Thread.sleep(5000);
 		}
 		logger.info("Completed Successfully.......................!");

@@ -40,7 +40,7 @@ public class Validator {
 		try {
 			result=new HashMap<>();
 			JsonObject planPayloadObject=getPayloadFromPlan(planObject);
-	    	JsonObject pfdPayloadObject=getPayloadFromPfd(pfdObject);
+	    	JsonObject pfdPayloadObject=pfdObject.getAsJsonObject(JsonFields.PAYLOAD.getValue());
 	    	
 	    	//Lines validation
 	    	boolean isLinesEqual=validateLineObjects(pfdPayloadObject, planPayloadObject);
@@ -84,10 +84,10 @@ public class Validator {
 			JsonObject planPathsObject=planPayload.getAsJsonObject(JsonFields.PATHS.getValue());
 			Set<Map.Entry<String,JsonElement>> pfdChildset=pfdLinesbject.entrySet();
 			Set<Map.Entry<String,JsonElement>> planChildset=planPathsObject.entrySet();
-			for (Entry<String, JsonElement> planEntry : planChildset) {
+			for (Entry<String, JsonElement> pfdEntry : pfdChildset) {
+				JsonObject lineObject=pfdEntry.getValue().getAsJsonObject();
 				boolean isExistLine=false;
-				for (Entry<String, JsonElement> pfdEntry : pfdChildset) {
-					JsonObject lineObject=pfdEntry.getValue().getAsJsonObject();
+				for (Entry<String, JsonElement> planEntry : planChildset) {
 					if(lineObject.get(JsonFields.ID.getValue()).getAsString().equals(planEntry.getKey())) {
 						isExistLine=true;
 						break;
@@ -151,21 +151,7 @@ public class Validator {
 		return isValid;
 	}
 	
-	/**
-	 * 
-	 * @name : getPayloadFromPfd
-	 * @description : The Method "getPayloadFromPfd" is used for getting payload object from pfd object.
-	 * @date : 26-Nov-2018 9:56:22 AM
-	 * @param pfdObject
-	 * @return
-	 * @return : JsonObject
-	 *
-	 */
-	private JsonObject getPayloadFromPfd(JsonObject pfdObject) {
-		JsonElement pfdInnerElement=pfdObject.getAsJsonArray(JsonFields.PFDS.getValue()).get(0);
-    	JsonObject  pfdInnerObject = pfdInnerElement.getAsJsonObject();
-    	return pfdInnerObject.getAsJsonObject(JsonFields.PAYLOAD.getValue());
-	}
+	
 	/**
 	 * 
 	 * @name : getPayloadFromPlan
