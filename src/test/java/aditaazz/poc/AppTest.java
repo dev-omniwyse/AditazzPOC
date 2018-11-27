@@ -14,8 +14,8 @@ import com.google.gson.JsonObject;
 import aditaazz.poc.constants.AditaazzConstants;
 import aditaazz.poc.service.AditaazzService;
 import aditaazz.poc.service.AuthenticationService;
-import aditaazz.poc.service.JsonReader;
-import aditaazz.poc.service.Validator;
+import aditaazz.poc.util.JsonReader;
+import aditaazz.poc.validator.Validator;
 import junit.framework.TestCase;
 
 /**

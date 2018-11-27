@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import aditaazz.poc.service.AditaazzService;
 import aditaazz.poc.service.AuthenticationService;
-import aditaazz.poc.service.JsonReader;
+import aditaazz.poc.util.JsonReader;
 
 /**
  * 

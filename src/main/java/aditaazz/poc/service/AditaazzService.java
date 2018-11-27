@@ -8,7 +8,9 @@ import com.google.gson.JsonObject;
 import aditaazz.poc.constants.AditaazzConstants;
 import aditaazz.poc.constants.UrlConstants;
 import aditaazz.poc.enums.JsonFields;
+import aditaazz.poc.util.JsonReader;
 import aditaazz.poc.util.RestUtil;
+import aditaazz.poc.validator.Validator;
 
 /**
  * 
@@ -80,26 +82,26 @@ public class AditaazzService {
 		JsonObject emptyEquipment=getEmptyEquipment();
 		JsonObject output = RestUtil.putObject(authToken,emptyEquipment,url+"&option_id="+optionId);
 		logger.info("Ticket Id : {} " , output.get(JsonFields.ID.getValue()).getAsString());
-		JsonObject ticketObject = new JsonObject();
+		String status = null;
 		while (true) {
-			ticketObject = getTicketObeject(output.get(JsonFields.ID.getValue()).getAsString(), authToken);
-			if (AditaazzConstants.COMPLETED_STATUS.equalsIgnoreCase(ticketObject.get(JsonFields.STATUS.getValue()).getAsString())) {
+			status = getStatusByTicketId(output.get(JsonFields.ID.getValue()).getAsString(), authToken);
+			if (AditaazzConstants.COMPLETED_STATUS.equalsIgnoreCase(status)) {
 				break;
 			}
-			logger.info("Ticket Status : {} " , output.get(JsonFields.STATUS.getValue()).getAsString());
+			logger.info("Ticket Status : {} " ,status);
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				logger.error("Thread exception occured due to "+e.getMessage(),e);
 			}
 		}
-		logger.info("Ticket Status : {} " , ticketObject.get(JsonFields.STATUS.getValue()).getAsString());
-		return ticketObject.get(JsonFields.STATUS.getValue()).getAsString();
+		logger.info("Ticket Status : {} " , status);
+		return status;
 	}
 	/**
 	 * 
 	 * @name : getTicketObeject
-	 * @description : The Method "getTicketObeject" is used for getting ticket based on ticket id. 
+	 * @description : The Method "getTicketObeject" is used for getting status based on ticket id. 
 	 * @date : 26-Nov-2018 11:03:25 AM
 	 * @param ticketId
 	 * @param authToken
@@ -107,8 +109,9 @@ public class AditaazzService {
 	 * @return : JsonObject
 	 *
 	 */
-	private JsonObject getTicketObeject(String ticketId, String authToken){
-		return RestUtil.getObject(authToken, null, UrlConstants.TICKET_URL+ticketId);
+	private String getStatusByTicketId(String ticketId, String authToken){
+		JsonObject jsonObject=RestUtil.getObject(authToken, null, UrlConstants.TICKET_URL+ticketId);
+		return jsonObject.get(JsonFields.STATUS.getValue()).getAsString();
 	}
 
 	/**

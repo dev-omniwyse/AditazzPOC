@@ -1,4 +1,4 @@
-package aditaazz.poc.service;
+package aditaazz.poc.util;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

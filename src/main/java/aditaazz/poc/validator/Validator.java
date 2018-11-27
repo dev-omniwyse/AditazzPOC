@@ -1,4 +1,4 @@
-package aditaazz.poc.service;
+package aditaazz.poc.validator;
 
 import java.util.HashMap;
 import java.util.Map;
