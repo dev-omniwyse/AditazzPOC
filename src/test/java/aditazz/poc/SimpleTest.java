@@ -79,6 +79,7 @@ public class SimpleTest {
 		Map<String,Boolean> result=validator.validatePlanAndPfd(pfdObject, planObject);
 		assertEquals("Equipments are equal.",true,result.get(AditazzConstants.EQUIPMENT_EQUAL).booleanValue() );
     	assertEquals("Lines are equal.",true,result.get(AditazzConstants.LINES_EQUAL).booleanValue() );
+    	System.out.println("Completed existing pfd and plan validation..........");
     }
 	
 	@Test
@@ -92,6 +93,7 @@ public class SimpleTest {
 		Map<String,Boolean> result=validator.validatePlanAndPfd(newPfdObject, planObject);
 		assertEquals("Equipments are equal.",true,result.get(AditazzConstants.EQUIPMENT_EQUAL).booleanValue() );
 		assertEquals("Lines are equal.",true,result.get(AditazzConstants.LINES_EQUAL).booleanValue() );
+		System.out.println("Completed new pfd and plan validation..........");
 	}
 	
 	
