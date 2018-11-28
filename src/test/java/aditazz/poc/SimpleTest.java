@@ -57,9 +57,9 @@ public class SimpleTest {
 		AuthenticationService authenticationService=new AuthenticationService();
 		authToken=authenticationService.getAuthenticationToken(appProps.getProperty("username"), appProps.getProperty("password"));
 		projectId=appProps.getProperty("projectid");
-		optionId="00000000-5bf3-9f2a-797f-070010c84b32";
-		planId="00000000-5bf3-9f2a-797f-070010c84b31";
-		pfdId="00000000-5bf3-9f2a-797f-070010c84b2f";
+		optionId="00000000-5bf3-9ef8-797f-070010c84b2b";
+		planId="00000000-5bf3-9ef8-797f-070010c84b2a";
+		pfdId="00000000-5bf3-9ef8-797f-070010c84b28";
 		aditazzService=new AditazzService();
 		validator=new Validator();
 	}
