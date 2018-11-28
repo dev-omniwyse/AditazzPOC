@@ -24,16 +24,16 @@ public class AditazzService {
 	
 	/**
 	 * 
-	 * @name : process
-	 * @description : The Method "process" is used for process the pfd and plan
-	 * @date : 27-Nov-2018 1:51:12 PM
+	 * @name : processPFD
+	 * @description : The Method "processPFD" is used for update pfd and validate pfd.
+	 * @date : 27-Nov-2018 4:54:49 PM
 	 * @param projectId
 	 * @param optionId
 	 * @param authToken
 	 * @return : void
 	 *
 	 */
-	public void process(String projectId,String optionId,String authToken) {
+	public void processPFD(String projectId,String optionId,String authToken) {
 		try {
 			JsonReader jsonReader=new JsonReader();
 			logger.info("Authentication token : {}" , authToken);
@@ -42,11 +42,14 @@ public class AditazzService {
 			String planId=jsonObject.get(JsonFields.PLAN_ID.getValue()).getAsString();
 			logger.info("Pfd id :: {} \t Plan id :: {}",pfdId,planId);
 			JsonObject pfdObject=getPfdObject(authToken, pfdId);
-			processPFD(authToken, planId, optionId, projectId, pfdObject,pfdId);
-			
-			
+			processPFDAndPlan(authToken, planId, optionId, projectId, pfdObject);
+		
+			logger.info("Validation Completed without updating pfd.............................!");
 			JsonObject newPfdObject=jsonReader.getPfdObject("/"+optionId+"_newpfd.json");
-			processPFD(authToken, planId, optionId, projectId, newPfdObject,pfdId);
+			logger.info("Updating pfd :::: {}",newPfdObject);
+			JsonObject jsonRes=updatePFD(authToken, newPfdObject, pfdId);
+			logger.info("Update pfd response is :: {}",jsonRes);
+			processPFDAndPlan(authToken, planId, optionId, projectId, newPfdObject);
 
 		}  catch (Exception e) {
 			logger.error("Exception occured due to :: "+e.getMessage(),e);
@@ -54,21 +57,18 @@ public class AditazzService {
 	}
 	/**
 	 * 
-	 * @name : processPFD
-	 * @description : The Method "processPFD" is used for update and validate plan and pfd values.
-	 * @date : 27-Nov-2018 1:51:17 PM
+	 * @name : processPFDAndPlan
+	 * @description : The Method "processPFDAndPlan" is used for validate plan and pfd.
+	 * @date : 27-Nov-2018 4:55:21 PM
 	 * @param authToken
 	 * @param planId
 	 * @param optionId
 	 * @param projectId
 	 * @param pfdObject
-	 * @param pfdId
 	 * @return : void
 	 *
 	 */
-	public void processPFD(String authToken,String planId,String optionId,String projectId,JsonObject pfdObject,String pfdId) {
-		JsonObject jsonObject=updatePFD(authToken, pfdObject, pfdId);
-		logger.info("Update pfd response is :: {}",jsonObject);
+	public void processPFDAndPlan(String authToken,String planId,String optionId,String projectId,JsonObject pfdObject) {
 		String status = generatePlan(UrlConstants.PLAN_PUT_URL+"&project_id="+projectId, authToken,optionId);
 		Validator validator=new Validator();
 		if (AditazzConstants.COMPLETED_STATUS.equalsIgnoreCase(status)){
