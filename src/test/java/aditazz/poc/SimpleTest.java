@@ -14,8 +14,10 @@ import org.junit.runners.MethodSorters;
 import com.google.gson.JsonObject;
 
 import aditazz.poc.constants.AditazzConstants;
+import aditazz.poc.constants.UrlConstants;
 import aditazz.poc.service.AditazzService;
 import aditazz.poc.service.AuthenticationService;
+import aditazz.poc.util.JsonReader;
 import aditazz.poc.validator.Validator;
 import junit.framework.TestCase;
 
@@ -71,13 +73,27 @@ public class SimpleTest {
 	 *
 	 */
 	@Test
-    public void validatePfdAndPlan() {
+    public void validateExistingPfdAndPlan() {
 		JsonObject pfdObject=aditazzService.getPfdObject(authToken, pfdId);
 		JsonObject planObject=aditazzService.getPlan(authToken, planId);
 		Map<String,Boolean> result=validator.validatePlanAndPfd(pfdObject, planObject);
 		assertEquals("Equipments are equal.",true,result.get(AditazzConstants.EQUIPMENT_EQUAL).booleanValue() );
     	assertEquals("Lines are equal.",true,result.get(AditazzConstants.LINES_EQUAL).booleanValue() );
     }
+	
+	@Test
+	public void validateNewPfdAndPlan() {
+		JsonReader jsonReader=new JsonReader();
+		JsonObject newPfdObject=jsonReader.getPfdObject("/"+optionId+"_newpfd.json");
+		assertEquals(true, aditazzService.updatePFD(authToken, newPfdObject, pfdId) != null);
+		assertEquals(AditazzConstants.COMPLETED_STATUS, aditazzService.generatePlan(UrlConstants.PLAN_PUT_URL+"&project_id="+projectId, authToken, optionId) );
+		
+		JsonObject planObject=aditazzService.getPlan(authToken, planId);
+		Map<String,Boolean> result=validator.validatePlanAndPfd(newPfdObject, planObject);
+		assertEquals("Equipments are equal.",true,result.get(AditazzConstants.EQUIPMENT_EQUAL).booleanValue() );
+		assertEquals("Lines are equal.",true,result.get(AditazzConstants.LINES_EQUAL).booleanValue() );
+	}
+	
 	
 	
 }
