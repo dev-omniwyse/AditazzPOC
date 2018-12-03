@@ -21,7 +21,8 @@ public enum JsonFields {
     PFD_ID("pfdid"),
     PLAN_ID("planid"),
     PFD("pfd"),
-    PLAN("plan"),;
+    PLAN("plan"),
+    IDERR("idErr");
 	
 
     private final String value;

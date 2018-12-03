@@ -193,6 +193,34 @@ public class AditazzService {
 		jsonObject.add(JsonFields.PLAN_ID.getValue(), planObj.get(JsonFields.ID.getValue()));
 		return jsonObject;
 	}
+	/**
+	 * 
+	 * @name : processRandomGraph
+	 * @description : The Method "processRandomGraph" is used for generate random raph and update the pfd
+	 * @date : 03-Dec-2018 3:07:22 PM
+	 * @param projectId
+	 * @param optionId
+	 * @param authToken
+	 * @return : void
+	 *
+	 */
+	public void processRandomGraph(String projectId,String optionId,String authToken) {
+		RandomGraphGenerator randomGraphGenerator=new RandomGraphGenerator();
+		logger.info("Authentication token : {}" , authToken);
+		JsonObject jsonObject=getPlanAndOptionId(authToken, optionId);
+		String pfdId=jsonObject.get(JsonFields.PFD_ID.getValue()).getAsString();
+		String planId=jsonObject.get(JsonFields.PLAN_ID.getValue()).getAsString();
+		logger.info("Pfd id :: {} \t Plan id :: {}",pfdId,planId);
+		JsonObject pfdObject=getPfdObject(authToken, pfdId);
+		JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(3,2);
+		pfdObject.add(JsonFields.PAYLOAD.getValue(), payloadObj);
+		logger.info("After generating random graph pfd json is :: {}",pfdObject);
+		/*JsonObject jsonRes=updatePFD(authToken, pfdObject, pfdId);
+		logger.info("Update pfd response is :: {}",jsonRes);
+		processPFDAndPlan(authToken, planId, optionId, projectId, pfdObject);*/
+	}
+	
+	
 	
 	/**
 	 * 

@@ -10,6 +10,8 @@ import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonObject;
 
@@ -30,6 +32,7 @@ import junit.framework.TestCase;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SimpleTest {
+	private static final Logger logger = LoggerFactory.getLogger(SimpleTest.class);
 	
 	String authenticationToken;
 	
@@ -62,6 +65,7 @@ public class SimpleTest {
 		pfdId="00000000-5bf3-9ef8-797f-070010c84b28";
 		aditazzService=new AditazzService();
 		validator=new Validator();
+		logger.info("Project id ::{} Option id ::{}",projectId,optionId);
 	}
 	
 	/**
@@ -74,8 +78,12 @@ public class SimpleTest {
 	 */
 	@Test
     public void validateExistingPfdAndPlan() {
+		
+		logger.info("Getting existing pfd for the id :: {}",pfdId);
 		JsonObject pfdObject=aditazzService.getPfdObject(authToken, pfdId);
+		logger.info("Getting existing plan for the id :: {}",planId);
 		JsonObject planObject=aditazzService.getPlan(authToken, planId);
+		logger.info("Validating existing plan and pfd");
 		Map<String,Boolean> result=validator.validatePlanAndPfd(pfdObject, planObject);
 		assertEquals("Equipments are equal.",true,result.get(AditazzConstants.EQUIPMENT_EQUAL).booleanValue() );
     	assertEquals("Lines are equal.",true,result.get(AditazzConstants.LINES_EQUAL).booleanValue() );
@@ -85,11 +93,15 @@ public class SimpleTest {
 	@Test
 	public void validateNewPfdAndPlan() {
 		JsonReader jsonReader=new JsonReader();
+		logger.info("Reading new pfd json from file ");
 		JsonObject newPfdObject=jsonReader.getPfdObject("/"+optionId+"_newpfd.json");
+		logger.info("Updating new pfd json :: {}",pfdId);
 		assertEquals(true, aditazzService.updatePFD(authToken, newPfdObject, pfdId) != null);
+		logger.info("Generating plan for id :: {}",planId);
 		assertEquals(AditazzConstants.COMPLETED_STATUS, aditazzService.generatePlan(UrlConstants.PLAN_PUT_URL+"&project_id="+projectId, authToken, optionId) );
-		
+		logger.info("Getting plan for id :: {}",planId);
 		JsonObject planObject=aditazzService.getPlan(authToken, planId);
+		logger.info("Validating plan and pfd");
 		Map<String,Boolean> result=validator.validatePlanAndPfd(newPfdObject, planObject);
 		assertEquals("Equipments are equal.",true,result.get(AditazzConstants.EQUIPMENT_EQUAL).booleanValue() );
 		assertEquals("Lines are equal.",true,result.get(AditazzConstants.LINES_EQUAL).booleanValue() );
