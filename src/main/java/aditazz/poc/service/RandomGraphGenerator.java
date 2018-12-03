@@ -36,12 +36,12 @@ public class RandomGraphGenerator {
 	private static final Logger logger = LoggerFactory.getLogger(AditazzService.class);
 	private static final AtomicLong seedUniquifier = new AtomicLong(8682522807148012L);
 	Map<String,String> listEquipments=new LinkedHashMap<>() ;
-	List<String> keySet=new LinkedList<>(Arrays.asList("P0","C0","HE0"));
+	List<String> keySet=new LinkedList<>(Arrays.asList("P0","BI","C0","HE0"));
 	
 	public RandomGraphGenerator() {
 		listEquipments.put("P0", "P");
 		listEquipments.put("C0", "C");
-		
+		listEquipments.put("BI", "BR");
 		listEquipments.put("HE0", "HE");
 	}
 	/**

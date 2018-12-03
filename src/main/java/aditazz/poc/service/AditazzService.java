@@ -185,7 +185,6 @@ public class AditazzService {
 	public JsonObject getPlanAndOptionId(String authToken,String optionId) {
 		JsonObject jsonObject=new JsonObject();
 		JsonObject responseObject=RestUtil.getObject(authToken, null, UrlConstants.OPTIONS_URL+optionId);
-		logger.info("Option Json :: {}",responseObject);
 		JsonObject optionObject=responseObject.get(JsonFields.OPTIONS.getValue()).getAsJsonArray().get(0).getAsJsonObject();
 		JsonObject payloadObj=optionObject.get(JsonFields.PAYLOAD.getValue()).getAsJsonObject();
 		JsonObject pfdObj=payloadObj.get(JsonFields.PFD.getValue()).getAsJsonObject();

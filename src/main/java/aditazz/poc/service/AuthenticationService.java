@@ -32,9 +32,9 @@ public class AuthenticationService {
 	 *
 	 */
 	public String getAuthenticationToken(String username,String password) {
+		logger.info("Getting authentication token.");
 		String key=new String(Base64Utils.encode((username+":"+password).getBytes()));
 		JsonObject jsonObject=RestUtil.getAuthenticationObject("Basic "+key);
-		logger.info("Authentication object :: {}",jsonObject);
 		return jsonObject.get(JsonFields.ACCESS_TOKEN.getValue()).getAsString();
 	}
 }
