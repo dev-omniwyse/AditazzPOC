@@ -85,7 +85,7 @@ public class RandomGraphGenerator {
 			
 			if(!uuids.containsKey(edges[0])) {
 				PfdEquipment pfdEquipment=new PfdEquipment();
-				pfdEquipment=equipmentService.preparePfdEquipment(pfdEquipment, listEquipments.get(keySet.get(Integer.parseInt(edges[0]))), sourceUuid, keySet.get(Integer.parseInt(edges[0])), "left");
+				pfdEquipment=equipmentService.preparePfdEquipment(pfdEquipment, listEquipments.get(keySet.get(Integer.parseInt(edges[0])-1)), sourceUuid, keySet.get(Integer.parseInt(edges[0])-1), "left");
 				uuids.put(edges[0], sourceUuid);
 				equipmentJson.add(sourceUuid, parser.parse(gson.toJson(pfdEquipment)).getAsJsonObject());
 			}else {
@@ -93,7 +93,7 @@ public class RandomGraphGenerator {
 			}
 			if(!uuids.containsKey(edges[1])) {
 				PfdEquipment pfdEquipment=new PfdEquipment();
-				pfdEquipment=equipmentService.preparePfdEquipment(pfdEquipment, listEquipments.get(keySet.get(Integer.parseInt(edges[1]))), targetUuid, keySet.get(Integer.parseInt(edges[1])), "right");
+				pfdEquipment=equipmentService.preparePfdEquipment(pfdEquipment, listEquipments.get(keySet.get(Integer.parseInt(edges[1])-1)), targetUuid, keySet.get(Integer.parseInt(edges[1])-1), "right");
 				uuids.put(edges[1], targetUuid);
 				
 				equipmentJson.add(targetUuid, parser.parse(gson.toJson(pfdEquipment)).getAsJsonObject());

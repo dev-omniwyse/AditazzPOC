@@ -108,14 +108,15 @@ public class AditazzService {
 	public String generatePlan(String url, String authToken,String optionId) {
 		JsonObject emptyEquipment=getEmptyEquipment();
 		JsonObject output = RestUtil.putObject(authToken,emptyEquipment,url+"&option_id="+optionId);
-		logger.info("Ticket Id : {} " , output.get(JsonFields.ID.getValue()).getAsString());
+		String ticketId=output.get(JsonFields.ID.getValue()).getAsString();
+		logger.info("Ticket Id : {} " , ticketId);
 		String status = null;
 		while (true) {
-			status = getStatusByTicketId(output.get(JsonFields.ID.getValue()).getAsString(), authToken);
+			status = getStatusByTicketId(ticketId, authToken);
 			if (AditazzConstants.COMPLETED_STATUS.equalsIgnoreCase(status)) {
 				break;
 			}
-			logger.info("Ticket Status : {} " ,status);
+			logger.info("Ticket id ::{} and Status :: {} " ,ticketId,status);
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
