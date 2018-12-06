@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -45,6 +46,7 @@ public class RandomGraphTest {
 	static RandomGraphGenerator randomGraphGenerator;
 	static Aditazz aditazz;
 	static EquipmentService equipmentService;
+	static JsonObject equipmentLib;
 	/**
 	 * 
 	 * @name : initialize
@@ -77,14 +79,12 @@ public class RandomGraphTest {
 		for(Entry<Object, Object> entry : optionIds.entrySet()) {
 			logger.info("Process started with Option id :: {}\t ",entry.getKey());
 			aditazz.setOptionId(entry.getKey().toString());
+			aditazz=aditazzService.getLibraryIds(aditazz);
 			aditazz=aditazzService.getPlanAndOptionId(aditazz);
-			
 			JsonObject pfdObject=aditazzService.getPfdObject(aditazz);
-			
-			
 			logger.info("Before generating random graph pfd json is ::{}",pfdObject);
 			logger.info("Generating random graph.........!");
-			JsonObject equipmentLib=equipmentService.getEquipments(aditazz);
+			equipmentLib=equipmentService.getEquipments(aditazz);
 			logger.info("Before updating equipment library json is :: {}",equipmentLib);
 			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(aditazz, 3, 2);
 			JsonObject updatedLib=equipmentService.getEquipments(aditazz);
@@ -111,13 +111,17 @@ public class RandomGraphTest {
 			assertEquals("Lines are equal.",true,result.get(AditazzConstants.LINES_EQUAL).booleanValue() );
 			assertEquals("Valid space exists.",true,result.get(AditazzConstants.VALID_DISTANCE).booleanValue() );
 			
-			logger.info("Reverting spacing changes in equipment library ");
-			assertEquals(true,equipmentService.updateEquipmentLibrary(aditazz, equipmentLib));
-			
 			System.out.println("Completed new pfd and plan validation..........");
 			logger.info("Process ended with Option id :: {}\t ",entry.getKey());
 			
 		}
+		
+		
+	}
+	@AfterClass
+	public static void revertChanges() { 
+		logger.info("Reverting spacing changes in equipment library {}",equipmentLib);
+		equipmentService.updateEquipmentLibrary(aditazz, equipmentLib);
 	}
 	
 	
