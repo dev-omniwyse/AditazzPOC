@@ -60,7 +60,7 @@ public class DistanceUtil {
 			shortestDistance=spaces.get(sourceType).getAsDouble();
 		}
 		
-		shortestDistance+=((shortestDistance/100)*15);
+		shortestDistance=Math.round((shortestDistance+((shortestDistance/100)*15)) * 100D) / 100D;
 		if(fromSource) {
 			spaces.add(targetType, gson.toJsonTree(shortestDistance));
 			spacingTable.put(sourceType, spaces);
@@ -95,5 +95,9 @@ public class DistanceUtil {
 	    
     	return distance;
     }
+	public static void main(String[] args) {
+		 double valueRounded = Math.round(222.5523 * 100D) / 100D;
+		 System.out.println(valueRounded);
+	}
 
 }

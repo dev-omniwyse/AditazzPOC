@@ -210,7 +210,7 @@ public class Validator {
     		if(spacingTable.containsKey(sourceType) || spacingTable.containsKey(targetType)) {
     			double shortestDistance=distanceUtil.getShortestDistance(sourceType, targetType, spacingTable);
     			double actualDistance=distanceUtil.getManhattanDistance(source.getCoordinates(),target.getCoordinates());
-    			logger.info("Source type :: {} to target type :: {} shortest distance is :: {} and actual distance is :: {}",sourceType,targetType,shortestDistance,actualDistance);
+    			logger.info("Source type :: {} to target type :: {} spacing table distance is :: {} and plan distance is :: {}",sourceType,targetType,shortestDistance,actualDistance);
     			if(actualDistance<shortestDistance) {    			
     				logger.info("Invalid distance found between source type :: {} and target type :: {}",sourceType,targetType);
     				isValid=false;

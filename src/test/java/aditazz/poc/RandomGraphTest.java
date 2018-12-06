@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -89,6 +88,11 @@ public class RandomGraphTest {
 			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(aditazz, 3, 2);
 			JsonObject updatedLib=equipmentService.getEquipments(aditazz);
 			logger.info("After updating equipment library json is :: {}",updatedLib);
+			int revision=equipmentService.getRevisonNumber(aditazz);
+			logger.info("Updating equipment revison in projects :: {}",revision);
+			assertEquals(true, aditazzService.updateProjectEquipLibRevison(revision, aditazz));
+			
+			
 			pfdObject.add(JsonFields.PAYLOAD.getValue(), payloadObj);
 			logger.info("After generating random graph pfd json is :: {}",payloadObj);
 			
@@ -118,11 +122,11 @@ public class RandomGraphTest {
 		
 		
 	}
-	@AfterClass
+	/*@AfterClass
 	public static void revertChanges() { 
 		logger.info("Reverting spacing changes in equipment library {}",equipmentLib);
 		equipmentService.updateEquipmentLibrary(aditazz, equipmentLib);
-	}
+	}*/
 	
 	
 	

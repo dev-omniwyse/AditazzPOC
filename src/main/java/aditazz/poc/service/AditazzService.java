@@ -219,6 +219,9 @@ public class AditazzService {
 		
 		JsonObject newEquipmentLib=equipmentService.getEquipments(aditazz);
 		logger.info("After updating spacing the json is :: {}",newEquipmentLib);
+		int revision=equipmentService.getRevisonNumber(aditazz);
+		logger.info("Updating equipment revison in projects :: {}",revision);
+		updateProjectEquipLibRevison(revision, aditazz);
 		
 		JsonObject pfdObject=getPfdObject(aditazz);
 		pfdObject.add(JsonFields.PAYLOAD.getValue(), payloadObj);
@@ -228,10 +231,15 @@ public class AditazzService {
 		JsonObject jsonRes=updatePFD( pfdObject, aditazz);
 		logger.info("Update pfd response is :: {}",jsonRes);
 		updateOptionRevison(aditazz, revison);
+		
+		
 		processPFDAndPlan(aditazz, pfdObject,newEquipmentLib);
 		
-		logger.info("Reverting spacing changes in equipment library ");
+		/*logger.info("Reverting spacing changes in equipment library ");
 		equipmentService.updateEquipmentLibrary(aditazz, equipmentLib);
+		revision=equipmentService.getRevisonNumber(aditazz);
+		logger.info("Updating equipment revison in projects :: {}",revision);
+		updateProjectEquipLibRevison(revision, aditazz);*/
 		
 	}
 	
@@ -296,6 +304,30 @@ public class AditazzService {
 		JsonObject response=RestUtil.putObject(aditazz.getAuthToken(), optionJson, UrlConstants.OPTIONS_URL+aditazz.getOptionId());
 		logger.info("After updating option the response is :: {}",response);
 		return response;
+	}
+	
+	/**
+	 * 
+	 * @name : updateProjectEquipLibRevison
+	 * @description : The Method "updateProjectEquipLibRevison" is used for updating equipment library revision number in projects.
+	 * @date : 06-Dec-2018 4:10:09 PM
+	 * @param number
+	 * @param aditazz
+	 * @return
+	 * @return : boolean
+	 *
+	 */
+	public boolean updateProjectEquipLibRevison(int number,Aditazz aditazz) {
+		JsonObject jsonObject=RestUtil.getObject(aditazz.getAuthToken(), null, UrlConstants.PROJECT_URL+aditazz.getProjectId());
+		JsonObject projectJson=jsonObject.get(JsonFields.PROJECTS.getValue()).getAsJsonArray().get(0).getAsJsonObject();
+		JsonObject payloadObj=projectJson.get(JsonFields.PAYLOAD.getValue()).getAsJsonObject();
+		JsonObject equipmentJson=payloadObj.get(JsonFields.EQUIPMENT_LIBRARY.getValue()).getAsJsonObject();
+		JsonObject revison=equipmentJson.get(JsonFields.REVISON.getValue()).getAsJsonObject();
+		revison.add(JsonFields.ID.getValue(), new Gson().toJsonTree(number));
+		JsonObject response=RestUtil.putObject(aditazz.getAuthToken(),projectJson, UrlConstants.PROJECT_URL+aditazz.getProjectId());
+		logger.info("After updating project json the response json is :: {}",response);
+		return response != null;
+		
 	}
 	
 	

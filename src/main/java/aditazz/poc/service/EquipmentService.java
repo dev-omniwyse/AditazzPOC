@@ -84,6 +84,22 @@ public class EquipmentService {
 	
 	/**
 	 * 
+	 * @name : getRevisonNumber
+	 * @description : The Method "getRevisonNumber" is used for 
+	 * @date : 06-Dec-2018 4:17:41 PM
+	 * @param aditazz
+	 * @return
+	 * @return : int
+	 *
+	 */
+	public int getRevisonNumber(Aditazz aditazz) {
+		JsonObject jsonObject=RestUtil.getObject(aditazz.getAuthToken(), null, UrlConstants.EQUIPMENT_LIB_URL+aditazz.getEquipLibId());
+		JsonObject revison=jsonObject.get(JsonFields.EQUIPMENT_LIBRARIES.getValue()).getAsJsonArray().get(0).getAsJsonObject().get(JsonFields.REVISON.getValue()).getAsJsonObject();
+		return revison.get(JsonFields.ID.getValue()).getAsInt();
+	}
+	
+	/**
+	 * 
 	 * @name : updateEquipmentLibrary
 	 * @description : The Method "updateEquipmentLibrary" is used for updating equipment payload in equipment library. 
 	 * @date : 06-Dec-2018 3:19:03 PM
