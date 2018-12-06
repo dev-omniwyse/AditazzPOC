@@ -18,10 +18,13 @@ import com.google.gson.JsonObject;
 
 import aditazz.poc.constants.AditazzConstants;
 import aditazz.poc.constants.UrlConstants;
+import aditazz.poc.dto.Aditazz;
 import aditazz.poc.enums.JsonFields;
 import aditazz.poc.service.AditazzService;
 import aditazz.poc.service.AuthenticationService;
+import aditazz.poc.service.EquipmentService;
 import aditazz.poc.service.RandomGraphGenerator;
+import aditazz.poc.util.JsonReader;
 import aditazz.poc.validator.Validator;
 import junit.framework.TestCase;
 
@@ -36,17 +39,12 @@ import junit.framework.TestCase;
 public class RandomGraphTest {
 	private static final Logger logger = LoggerFactory.getLogger(RandomGraphTest.class);
 	
-	String authenticationToken;
-	
-	static String authToken;
-	static String optionId;
-	static String planId;
 	static AditazzService aditazzService;
-	static String pfdId;
 	static Validator validator;
-	static String projectId;
 	static Properties optionIds=new Properties();
 	static RandomGraphGenerator randomGraphGenerator;
+	static Aditazz aditazz;
+	static EquipmentService equipmentService;
 	/**
 	 * 
 	 * @name : initialize
@@ -58,44 +56,64 @@ public class RandomGraphTest {
 	 */
 	@BeforeClass
     public static void initialize() throws IOException {
+		aditazz=new Aditazz();
 		Properties appProps=new Properties();
 		appProps.load(TestCase.class.getClassLoader().getResourceAsStream("application.properties"));
 		AuthenticationService authenticationService=new AuthenticationService();
-		authToken=authenticationService.getAuthenticationToken(appProps.getProperty("username"), appProps.getProperty("password"));
-		projectId=appProps.getProperty("projectid");
+		aditazz.setAuthToken(authenticationService.getAuthenticationToken(appProps.getProperty("username"), appProps.getProperty("password")));
+		aditazz.setProjectId(appProps.getProperty("projectid"));
 		optionIds.load(TestCase.class.getClassLoader().getResourceAsStream("option_plan.properties"));
 		aditazzService=new AditazzService();
 		validator=new Validator();
 		randomGraphGenerator=new RandomGraphGenerator();
-		logger.info("Project id ::{} ",projectId);
+		equipmentService=new EquipmentService();
+		logger.info("Project id ::{} ",aditazz.getProjectId());
 	}
 	
 	
 	
 	@Test
-	public void validateRandomGraph() {
+	public void validateRandomGraph() throws IOException {
 		for(Entry<Object, Object> entry : optionIds.entrySet()) {
 			logger.info("Process started with Option id :: {}\t ",entry.getKey());
-			optionId=entry.getKey().toString();
-			JsonObject optionJson=aditazzService.getPlanAndOptionId(authToken,optionId);
-			pfdId=optionJson.get(JsonFields.PFD_ID.getValue()).getAsString();
-			planId=optionJson.get(JsonFields.PLAN_ID.getValue()).getAsString();
-			JsonObject pfdObject=aditazzService.getPfdObject(authToken, pfdId);
+			aditazz.setOptionId(entry.getKey().toString());
+			aditazz=aditazzService.getPlanAndOptionId(aditazz);
+			
+			JsonObject pfdObject=aditazzService.getPfdObject(aditazz);
+			
+			
 			logger.info("Before generating random graph pfd json is ::{}",pfdObject);
 			logger.info("Generating random graph.........!");
-			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(3,2);
+			JsonObject equipmentLib=equipmentService.getEquipments(aditazz);
+			logger.info("Before updating equipment library json is :: {}",equipmentLib);
+			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(aditazz, 3, 2);
+			JsonObject updatedLib=equipmentService.getEquipments(aditazz);
+			logger.info("After updating equipment library json is :: {}",updatedLib);
 			pfdObject.add(JsonFields.PAYLOAD.getValue(), payloadObj);
 			logger.info("After generating random graph pfd json is :: {}",payloadObj);
-			logger.info("Updating random graph pfd json :: {}",pfdId);
-			assertEquals(true, aditazzService.updatePFD(authToken, pfdObject, pfdId) != null);
-			logger.info("Generating plan for id :: {}",planId);
-			assertEquals(AditazzConstants.COMPLETED_STATUS, aditazzService.generatePlan(UrlConstants.PLAN_PUT_URL+"&project_id="+projectId, authToken, optionId) );
-			logger.info("Getting plan for id :: {}",planId);
-			JsonObject planObject=aditazzService.getPlan(authToken, planId);
+			
+			
+			logger.info("Updating random graph pfd json :: {}",aditazz.getPfdId());
+			assertEquals(true, aditazzService.updatePFD(pfdObject, aditazz) != null);
+			
+			
+			int revison=new JsonReader().getPfdRevision(pfdObject)+1;
+			logger.info("Updating option with latest revision :: {}",revison);
+			assertEquals(true,aditazzService.updateOptionRevison(aditazz, revison) != null);
+			
+			logger.info("Generating plan for id :: {}",aditazz.getPlanId());
+			assertEquals(AditazzConstants.COMPLETED_STATUS, aditazzService.generatePlan(UrlConstants.PLAN_PUT_URL+"&project_id="+aditazz.getProjectId(), aditazz.getAuthToken(),aditazz.getOptionId()) );
+			logger.info("Getting plan for id :: {}",aditazz.getPlanId());
+			JsonObject planObject=aditazzService.getPlan(aditazz);
 			logger.info("Validating plan and pfd");
-			Map<String,Boolean> result=validator.validatePlanAndPfd(pfdObject, planObject);
+			Map<String,Boolean> result=validator.validatePlanAndPfd(pfdObject, planObject, updatedLib);
 			assertEquals("Equipments are equal.",true,result.get(AditazzConstants.EQUIPMENT_EQUAL).booleanValue() );
 			assertEquals("Lines are equal.",true,result.get(AditazzConstants.LINES_EQUAL).booleanValue() );
+			assertEquals("Valid space exists.",true,result.get(AditazzConstants.VALID_DISTANCE).booleanValue() );
+			
+			logger.info("Reverting spacing changes in equipment library ");
+			assertEquals(true,equipmentService.updateEquipmentLibrary(aditazz, equipmentLib));
+			
 			System.out.println("Completed new pfd and plan validation..........");
 			logger.info("Process ended with Option id :: {}\t ",entry.getKey());
 			

@@ -22,7 +22,18 @@ public enum JsonFields {
     PLAN_ID("planid"),
     PFD("pfd"),
     PLAN("plan"),
-    IDERR("idErr");
+    IDERR("idErr"),
+    PROJECTS("projects"),
+    EQUIPMENT_LIBRARY("equipment_library"),
+    PIPE_LIBRARY("pipe_library"),
+    EQUIPMENT_LIBRARIES("equipment_libraries"),
+    ROW_ORDER("rowOrder"),
+    SPACING("spacing"),
+    PIPE_LIBRARIES("pipe_libraries"),
+    PIPES("pipes"),
+    REVISON("revision"),
+    TYPES("types"),
+    TYPE("type");
 	
 
     private final String value;

@@ -12,5 +12,6 @@ public class AditazzConstants {
 	public static final String COMPLETED_STATUS="COMPLETED";
 	public static final String EQUIPMENT_EQUAL="isEquipmentEqual";
 	public static final String LINES_EQUAL="isLinesEqual";
+	public static final String VALID_DISTANCE="isValidDistance";
 }
 

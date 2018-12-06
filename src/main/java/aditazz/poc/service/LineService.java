@@ -7,7 +7,6 @@ package aditazz.poc.service;
  * @description : The class LineService.java used for
  */
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,7 @@ public class LineService {
 	 * @return : Line
 	 *
 	 */
-	public Line preparePfdLine(Line line,String uuid,String sourceSide,String targetSide,String sourceUuid,String targetUuid) {
+	public Line preparePfdLine(Line line,String uuid,String sourceSide,String targetSide,String sourceUuid,String targetUuid,List<Integer[]> path) {
 		line.setUuid(uuid);
 		line.setStraight(false);
 		Map<String,Object> errors=new HashMap<>();
@@ -43,20 +42,11 @@ public class LineService {
         LineSource lineSource=getLineSource(sourceUuid, sourceSide);
         line.setSource(lineSource);
         line.setDrawing(false);
-        
+        line.setPath(path);
         LineTarget lineTarget=getLineTarget(targetSide, targetUuid);
         line.setTarget(lineTarget);
-        List<Integer[]> paths=new ArrayList<>();
-        paths.add(new Integer[] {460,  423});
-        paths.add(new Integer[] {484,423});
-        paths.add(new Integer[] {484,436});
-        paths.add(new Integer[] { 490,436});
-        paths.add(new Integer[] {490,434});
-        line.setPath(paths);
         line.setLength(46);
-        line.setPipeID("PPXC39349");
-		
-		return line;
+        return line;
 	}
 	/**
 	 * 
@@ -74,7 +64,7 @@ public class LineService {
         lineSource.setUuid(sourceUuid);
         lineSource.setSide(sourceSide);
         lineSource.setType("equipment");
-        lineSource.setPosition(new Double[] {1d,0.5});
+        lineSource.setPosition(new Double[] {0d,0d});
         lineSource.setNozzle(sourceUuid+sourceSide+"1");
         return lineSource;
 	}
@@ -94,7 +84,7 @@ public class LineService {
 		lineTarget.setUuid(targetUuid);
 		lineTarget.setSide(targetSide);
 		lineTarget.setType("equipment");
-		lineTarget.setPosition(new Double[] {0.5,1d});
+		lineTarget.setPosition(new Double[] {0d,0d});
 		lineTarget.setNozzle(targetUuid+targetSide+"1");
 		return lineTarget;
 		

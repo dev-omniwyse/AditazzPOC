@@ -7,6 +7,7 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import aditazz.poc.dto.Aditazz;
 import aditazz.poc.service.AditazzService;
 import aditazz.poc.service.AuthenticationService;
 
@@ -28,12 +29,17 @@ public class AditazzApp {
 		AuthenticationService authenticationService=new AuthenticationService();
 		String authToken=authenticationService.getAuthenticationToken(appProps.getProperty("username"), appProps.getProperty("password"));
 		String projectId=appProps.getProperty("projectid");
+		Aditazz aditazz=new Aditazz();
+		aditazz.setAuthToken(authToken);
+		aditazz.setProjectId(projectId);
+		aditazz=aditazzService.getLibraryIds(aditazz);
 		Properties properties=new Properties();
+		
 		properties.load(AditazzApp.class.getClassLoader().getResourceAsStream("option_plan.properties"));
 		for(Entry<Object, Object> entry : properties.entrySet()) {
+			aditazz.setOptionId(entry.getKey().toString());
 			logger.info("Process started with Option id :: {}\t ",entry.getKey());
-			//aditazzService.processPFD(projectId,entry.getKey().toString(),authToken);
-			aditazzService.processRandomGraph(projectId, entry.getKey().toString(), authToken);
+			aditazzService.processRandomGraph(aditazz);
 			logger.info("Process ended with Option id :: {}\t ",entry.getKey());
 			Thread.sleep(5000);
 		}

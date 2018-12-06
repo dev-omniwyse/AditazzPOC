@@ -106,4 +106,11 @@ public class JsonReader {
 		}
 		return jobject;
 	}
+	
+	public int getPfdRevision(JsonObject jsonObject) {
+		JsonObject revisonObj=jsonObject.get(JsonFields.REVISON.getValue()).getAsJsonObject();
+		return Integer.parseInt(revisonObj.get(JsonFields.ID.getValue()).getAsString());
+	}
+	
+	
 }

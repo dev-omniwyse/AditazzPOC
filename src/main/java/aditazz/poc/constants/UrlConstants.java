@@ -19,4 +19,10 @@ public class UrlConstants {
 	public static final String PFD_URL="https://kaarmana-dataservice-stg.aditazz.com/pfds/";
 	
 	public static final String OPTIONS_URL="https://kaarmana-dataservice-stg.aditazz.com/options/";
+	
+	public static final String PROJECT_URL="https://kaarmana-dataservice-stg.aditazz.com/projects/";
+	
+	public static final String EQUIPMENT_LIB_URL="https://kaarmana-dataservice-stg.aditazz.com/equipment_libraries/";
+	
+	public static final String PIPE_LIB_URL="https://kaarmana-dataservice-stg.aditazz.com/pipe_libraries/";
 }

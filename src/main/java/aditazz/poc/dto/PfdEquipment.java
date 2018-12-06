@@ -20,11 +20,11 @@ public class PfdEquipment {
 	private String[] nozzlesToReconciliate;
 	private String[] occupiedNozzles;
 	private String type;
-	private Long x;
-	private Long y;
+	private Integer x;
+	private Integer y;
 	private boolean dragging;
-	private Long lastX;
-	private Long lastY;
+	private Integer lastX;
+	private Integer lastY;
 	private boolean grouping; 
 	
 	public boolean isGrouping() {
@@ -39,16 +39,16 @@ public class PfdEquipment {
 	public void setDragging(boolean dragging) {
 		this.dragging = dragging;
 	}
-	public long getLastX() {
+	public Integer getLastX() {
 		return lastX;
 	}
-	public void setLastX(long lastX) {
+	public void setLastX(Integer lastX) {
 		this.lastX = lastX;
 	}
-	public long getLastY() {
+	public Integer getLastY() {
 		return lastY;
 	}
-	public void setLastY(long lastY) {
+	public void setLastY(Integer lastY) {
 		this.lastY = lastY;
 	}
 	public long getArea() {
@@ -87,10 +87,10 @@ public class PfdEquipment {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public boolean isResizing() {
+	public boolean getIsResizing() {
 		return isResizing;
 	}
-	public void setResizing(boolean isResizing) {
+	public void setIsResizing(boolean isResizing) {
 		this.isResizing = isResizing;
 	}
 	public String[] getNozzlesToReconciliate() {
@@ -111,16 +111,16 @@ public class PfdEquipment {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public long getX() {
+	public Integer getX() {
 		return x;
 	}
-	public void setX(long x) {
+	public void setX(Integer x) {
 		this.x = x;
 	}
-	public long getY() {
+	public Integer getY() {
 		return y;
 	}
-	public void setY(long y) {
+	public void setY(Integer y) {
 		this.y = y;
 	}
 	
