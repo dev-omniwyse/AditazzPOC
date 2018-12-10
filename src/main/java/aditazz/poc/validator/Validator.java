@@ -15,6 +15,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import aditazz.poc.constants.AditazzConstants;
+import aditazz.poc.dto.PlanEquipment;
 import aditazz.poc.dto.PlanLine;
 import aditazz.poc.dto.PlanMapping;
 import aditazz.poc.enums.JsonFields;
@@ -195,8 +196,10 @@ public class Validator {
     	boolean isValid=true;
     	EquipmentService equipmentService=new EquipmentService();
     	JsonObject pathObject=planPayload.getAsJsonObject(JsonFields.PATHS.getValue());
+    	JsonObject planEquipments=planPayload.getAsJsonObject(JsonFields.EQUIPMENT.getValue());
     	JsonObject pfdEquipment=pfdObject.getAsJsonObject(JsonFields.EQUIPMENT.getValue());
     	Map<String,JsonObject> spacingTable=equipmentService.getSpacingTableFromLib(equipmentLib);
+    	
     	Set<String> lineIds=pathObject.keySet();
     	DistanceUtil distanceUtil=new DistanceUtil();
     	for (String lineId :lineIds) {
@@ -205,13 +208,19 @@ public class Validator {
     		PlanMapping target=planLine.getTarget();
     		String sourceType=getEquipmentType(pfdEquipment, source.getId());
     		String targetType=getEquipmentType(pfdEquipment, target.getId());
+    		PlanEquipment sourceEquip=objectMapper.readValue(gson.toJson(planEquipments.get(source.getId())),PlanEquipment.class);
+    		PlanEquipment targetEquip=objectMapper.readValue(gson.toJson(planEquipments.get(target.getId())),PlanEquipment.class);
     		
     		//A -> B or B -> A same distance should be there. In spacing table either A->B or B->A will be there.  
     		if(spacingTable.containsKey(sourceType) || spacingTable.containsKey(targetType)) {
     			double shortestDistance=distanceUtil.getShortestDistance(sourceType, targetType, spacingTable);
-    			double actualDistance=distanceUtil.getManhattanDistance(source.getCoordinates(),target.getCoordinates());
-    			logger.info("Source type :: {} to target type :: {} spacing table distance is :: {} and plan distance is :: {}",sourceType,targetType,shortestDistance,actualDistance);
-    			if(actualDistance<shortestDistance) {    			
+    			Map<String,Double> distances=distanceUtil.calculateDistance(sourceEquip, targetEquip);
+    			double x=distances.get(JsonFields.X.getValue());
+    			double y=distances.get(JsonFields.Y.getValue());
+    			double z=distances.get(JsonFields.Z.getValue());
+    			logger.info("Source type :: {} to target type :: {} spacing table distance is :: {} and plan distance X is :: {} Y is ::{} and Z is ::{} ",sourceType,targetType,shortestDistance,x,y,z);
+    			
+    			if(x < shortestDistance && y < shortestDistance && z < shortestDistance) {    			
     				logger.info("Invalid distance found between source type :: {} and target type :: {}",sourceType,targetType);
     				isValid=false;
     				break;
@@ -247,6 +256,7 @@ public class Validator {
     	}
     	return type;
     }
+    
     
     
 }

@@ -9,17 +9,18 @@ import java.util.Map;
  * @description : The class PlanEquipment.java used for
  */
 public class PlanEquipment {
-	private String[] dimensions;
+	private double[] dimensions;
 	private Lines lines;
 	private Nodes nodes;
-	private String[] position;
+	private double[] position;
 	private String type; 
 	private Map<String,Map<String,Object>> nozzles;
 	
-	public String[] getDimensions() {
+	
+	public double[] getDimensions() {
 		return dimensions;
 	}
-	public void setDimensions(String[] dimensions) {
+	public void setDimensions(double[] dimensions) {
 		this.dimensions = dimensions;
 	}
 	public Lines getLines() {
@@ -34,10 +35,10 @@ public class PlanEquipment {
 	public void setNodes(Nodes nodes) {
 		this.nodes = nodes;
 	}
-	public String[] getPosition() {
+	public double[] getPosition() {
 		return position;
 	}
-	public void setPosition(String[] position) {
+	public void setPosition(double[] position) {
 		this.position = position;
 	}
 	public String getType() {

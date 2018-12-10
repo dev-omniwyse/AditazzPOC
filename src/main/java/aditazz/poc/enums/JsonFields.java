@@ -33,7 +33,10 @@ public enum JsonFields {
     PIPES("pipes"),
     REVISON("revision"),
     TYPES("types"),
-    TYPE("type");
+    TYPE("type"),
+    X("x"),
+    Y("y"),
+    Z("z");
 	
 
     private final String value;

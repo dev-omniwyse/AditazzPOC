@@ -1,9 +1,13 @@
 package aditazz.poc.util;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
+import aditazz.poc.dto.PlanEquipment;
+import aditazz.poc.enums.JsonFields;
 /**
  * 
  * @author      : Sreekhar Reddy.K
@@ -95,4 +99,40 @@ public class DistanceUtil {
 	    
     	return distance;
     }
+	/**
+	 * 
+	 * @name : calculateDistance
+	 * @description : The Method "calculateDistance" is used for 
+	 * @date : 10-Dec-2018 12:53:13 PM
+	 * @param sourceEquip
+	 * @param targetEquip
+	 * @return
+	 * @return : Map<String,Double>
+	 *
+	 */
+	public Map<String,Double> calculateDistance(PlanEquipment sourceEquip,PlanEquipment targetEquip) {
+		Map<String,Double> distances=new HashMap<>();
+		double[] sourcePosition=sourceEquip.getPosition();
+		double[] sourceDime=sourceEquip.getDimensions();
+		double[] targetPosition=targetEquip.getDimensions();
+		distances.put(JsonFields.X.getValue(), calculateDistance(sourcePosition[0],sourceDime[0],  targetPosition[0]));
+		distances.put(JsonFields.Y.getValue(), calculateDistance(sourceDime[1], sourcePosition[1], targetPosition[1]));
+		distances.put(JsonFields.Z.getValue(), calculateDistance(sourceDime[2], sourcePosition[2], targetPosition[2]));
+		return distances;
+	}
+	/**
+	 * 
+	 * @name : calculateDistance
+	 * @description : The Method "calculateDistance" is used for 
+	 * @date : 10-Dec-2018 12:43:52 PM
+	 * @param sourcePosi
+	 * @param sourceDimension
+	 * @param targetPosition
+	 * @return
+	 * @return : double
+	 *
+	 */
+	private double calculateDistance(double sourcePosi,double sourceDimension,double targetPosition) {
+		return Math.abs((sourcePosi+sourceDimension)-targetPosition);
+	}
 }
