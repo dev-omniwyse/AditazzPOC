@@ -18,6 +18,20 @@ public class PlanMapping {
 	private Map<String,double[]> routeTo;
 	private PlanReach reachTo;
 	private double yRackBoundary;
+	private  double reachToOffset;
+	private double routeToOffset;
+	public double getReachToOffset() {
+		return reachToOffset;
+	}
+	public void setReachToOffset(double reachToOffset) {
+		this.reachToOffset = reachToOffset;
+	}
+	public double getRouteToOffset() {
+		return routeToOffset;
+	}
+	public void setRouteToOffset(double routeToOffset) {
+		this.routeToOffset = routeToOffset;
+	}
 	public String getId() {
 		return id;
 	}
