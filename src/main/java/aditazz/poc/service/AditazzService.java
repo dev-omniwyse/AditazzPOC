@@ -257,7 +257,6 @@ public class AditazzService {
 	 */
 	public JsonObject getPfdObject(Aditazz aditazz) {
 		JsonObject jsonObject=RestUtil.getObject(aditazz.getAuthToken(), null, UrlConstants.PFD_URL+aditazz.getPfdId());
-		logger.info("Pfd json :: {} ",jsonObject);
 		return jsonObject.get(JsonFields.PFDS.getValue()).getAsJsonArray().get(0).getAsJsonObject();
 	}
 	/**
