@@ -93,7 +93,7 @@ public class RandomGraphTest {
 			logger.info("Generating random graph.........!");
 			equipmentLib=equipmentService.getEquipments(aditazz);
 			logger.info("Before updating equipment library json is :: {}",equipmentLib);
-			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(aditazz, 10, 9);
+			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(aditazz, 15, 20);
 			JsonObject updatedLib=equipmentService.getEquipments(aditazz);
 			logger.info("After updating equipment library json is :: {}",updatedLib);
 			int revision=equipmentService.getRevisonNumber(aditazz);
@@ -123,7 +123,7 @@ public class RandomGraphTest {
 			assertEquals("Lines are equal.",true,result.get(AditazzConstants.LINES_EQUAL).booleanValue() );
 			assertEquals("Valid space exists.",true,result.get(AditazzConstants.VALID_DISTANCE).booleanValue() );
 			
-			System.out.println("Completed new pfd and plan validation..........");
+			System.out.println("Completed pfd and plan validation..........");
 			logger.info("Process ended with Option id :: {}\t ",entry.getKey());
 			
 		}
