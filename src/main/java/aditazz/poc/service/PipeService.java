@@ -34,10 +34,5 @@ public class PipeService {
 		JsonObject pipeJson=payloadObj.get(JsonFields.PIPES.getValue()).getAsJsonObject();
 		return new LinkedList<>(pipeJson.keySet());
 	}
-	
-	public static void main(String[] args) {
-		Aditazz aditazz=new Aditazz();
-		aditazz.setAuthToken("");
-		aditazz.setPipeLibId("00000000-5be2-1baa-797f-070010c84add");
-	}
+
 }

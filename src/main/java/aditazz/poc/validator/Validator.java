@@ -225,6 +225,17 @@ public class Validator {
     	return isValid;
     }
     
+    /**
+     * 
+     * @name : getEquipmentType
+     * @description : The Method "getEquipmentType" is used for getting equipment type.
+     * @date : 10-Dec-2018 10:57:00 AM
+     * @param equipmentObj
+     * @param id
+     * @return
+     * @return : String
+     *
+     */
     private String getEquipmentType(JsonObject equipmentObj,String id) {
     	String type=null;
     	for (String key : equipmentObj.keySet()) {

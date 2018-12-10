@@ -49,6 +49,7 @@ public class RandomGraphGenerator {
 	 * @name : generateRandomGraph
 	 * @description : The Method "generateRandomGraph" is used for generate random graph and prepare the valid equipments and lines. 
 	 * @date : 03-Dec-2018 3:08:01 PM
+	 * @param aditazz
 	 * @param numberOfNodes
 	 * @param numberOfEdges
 	 * @return

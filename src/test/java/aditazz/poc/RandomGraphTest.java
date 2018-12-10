@@ -72,7 +72,15 @@ public class RandomGraphTest {
 	}
 	
 	
-	
+	/**
+	 * 
+	 * @name : validateRandomGraph
+	 * @description : The Method "validateRandomGraph" is used for validating pfd and plan payload. 
+	 * @date : 10-Dec-2018 10:58:20 AM
+	 * @throws IOException
+	 * @return : void
+	 *
+	 */
 	@Test
 	public void validateRandomGraph() throws IOException {
 		for(Entry<Object, Object> entry : optionIds.entrySet()) {
@@ -85,7 +93,7 @@ public class RandomGraphTest {
 			logger.info("Generating random graph.........!");
 			equipmentLib=equipmentService.getEquipments(aditazz);
 			logger.info("Before updating equipment library json is :: {}",equipmentLib);
-			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(aditazz, 3, 2);
+			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(aditazz, 10, 9);
 			JsonObject updatedLib=equipmentService.getEquipments(aditazz);
 			logger.info("After updating equipment library json is :: {}",updatedLib);
 			int revision=equipmentService.getRevisonNumber(aditazz);
