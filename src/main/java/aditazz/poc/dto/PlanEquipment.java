@@ -12,9 +12,16 @@ public class PlanEquipment {
 	private double[] dimensions;
 	private Lines lines;
 	private Nodes nodes;
+	public Integer getLength() {
+		return length;
+	}
+	public void setLength(Integer length) {
+		this.length = length;
+	}
 	private double[] position;
 	private String type; 
 	private Map<String,Map<String,Object>> nozzles;
+	private Integer length;
 	
 	
 	public double[] getDimensions() {

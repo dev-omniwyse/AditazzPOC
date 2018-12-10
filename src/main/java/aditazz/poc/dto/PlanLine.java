@@ -1,5 +1,7 @@
 package aditazz.poc.dto;
 
+import java.util.List;
+
 /**
  * 
  * @author      : Sreekhar Reddy.K
@@ -12,6 +14,13 @@ public class PlanLine {
 	private PlanMapping source;
 	private PlanMapping target;
 	private String pipeID;
+	private List<String[]> path; 
+	public List<String[]> getPath() {
+		return path;
+	}
+	public void setPath(List<String[]> path) {
+		this.path = path;
+	}
 	public String getStatus() {
 		return status;
 	}
