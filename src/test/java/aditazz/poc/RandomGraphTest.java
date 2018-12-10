@@ -93,7 +93,7 @@ public class RandomGraphTest {
 			logger.info("Generating random graph.........!");
 			equipmentLib=equipmentService.getEquipments(aditazz);
 			logger.info("Before updating equipment library json is :: {}",equipmentLib);
-			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(aditazz, 15, 20);
+			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(aditazz, 10, 9);
 			JsonObject updatedLib=equipmentService.getEquipments(aditazz);
 			logger.info("After updating equipment library json is :: {}",updatedLib);
 			int revision=equipmentService.getRevisonNumber(aditazz);

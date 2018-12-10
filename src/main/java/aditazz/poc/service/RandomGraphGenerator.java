@@ -69,7 +69,7 @@ public class RandomGraphGenerator {
 		JsonObject lineJson=new JsonObject();
 		LinkedHashMap<String, String> uuids=new LinkedHashMap<>();
 		JsonParser parser = new JsonParser();
-		
+		logger.info("Number of equipments ::{} And Number of lines ::{}",numberOfNodes,numberOfEdges);
 		Graph<Integer, DefaultEdge> graph =gnerateGraph(numberOfNodes, numberOfEdges);
 		int counter=0;
 		String lineId="L000";
