@@ -299,9 +299,9 @@ public class AditazzService {
 		pfdJson.add(JsonFields.REVISON.getValue(), revison);
 		payloadObj.add(JsonFields.PFD.getValue(), pfdJson);
 		optionJson.add(JsonFields.PAYLOAD.getValue(), payloadObj);
-		logger.info("Updated option json :: {}",optionJson);
+		//logger.info("Updated option json :: {}",optionJson);
 		JsonObject response=RestUtil.putObject(aditazz.getAuthToken(), optionJson, UrlConstants.OPTIONS_URL+aditazz.getOptionId());
-		logger.info("After updating option the response is :: {}",response);
+		//logger.info("After updating option the response is :: {}",response);
 		return response;
 	}
 	
