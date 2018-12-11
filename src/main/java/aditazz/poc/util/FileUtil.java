@@ -7,9 +7,11 @@ import java.io.IOException;
 
 public class FileUtil {
 	public static void createFile() throws IOException {
-		 File f=new File("/var/lib/jenkins/workspace/aditazz/abc1.txt");
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(f)))
+		 File f=new File("/var/lib/jenkins/workspace/aditazz/output_files/abc1.txt");
+		 try (BufferedWriter writer = new BufferedWriter(new FileWriter(f)))
 		{
+			
+			
 		    writer.write("Hello World !!");
 		    System.out.println(f.getAbsolutePath());
 		}catch (Exception e) {
