@@ -47,6 +47,8 @@ public class RandomGraphTest {
 	static Aditazz aditazz;
 	static EquipmentService equipmentService;
 	static JsonObject equipmentLib;
+	static FileUtil fileUtil;
+	static String path;
 	/**
 	 * 
 	 * @name : initialize
@@ -69,6 +71,8 @@ public class RandomGraphTest {
 		validator=new Validator();
 		randomGraphGenerator=new RandomGraphGenerator();
 		equipmentService=new EquipmentService();
+		fileUtil=new FileUtil();
+		path=appProps.getProperty("filepath");
 		logger.info("Project id ::{} ",aditazz.getProjectId());
 	}
 	
@@ -90,13 +94,14 @@ public class RandomGraphTest {
 			aditazz=aditazzService.getLibraryIds(aditazz);
 			aditazz=aditazzService.getPlanAndOptionId(aditazz);
 			JsonObject pfdObject=aditazzService.getPfdObject(aditazz);
-			logger.info("Before generating random graph pfd json is ::{}",pfdObject);
+			//logger.info("Before generating random graph pfd json is ::{}",pfdObject);
 			logger.info("Generating random graph.........!");
 			equipmentLib=equipmentService.getEquipments(aditazz);
-			logger.info("Before updating equipment library json is :: {}",equipmentLib);
+			//logger.info("Before updating equipment library json is :: {}",equipmentLib);
 			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(aditazz, 3, 2);
 			JsonObject updatedLib=equipmentService.getEquipments(aditazz);
-			logger.info("After updating equipment library json is :: {}",updatedLib);
+			//logger.info("After updating equipment library json is :: {}",updatedLib);
+			fileUtil.createFile(path, updatedLib.toString(), "updated_equipment_library");
 			int revision=equipmentService.getRevisonNumber(aditazz);
 			logger.info("Updating equipment revison in projects :: {}",revision);
 			assertEquals(true, aditazzService.updateProjectEquipLibRevison(revision, aditazz));
@@ -108,7 +113,7 @@ public class RandomGraphTest {
 			
 			logger.info("Updating random graph pfd json :: {}",aditazz.getPfdId());
 			assertEquals(true, aditazzService.updatePFD(pfdObject, aditazz) != null);
-			
+			fileUtil.createFile(path, pfdObject.toString(), "updated_pfd");
 			
 			int revison=new JsonReader().getPfdRevision(pfdObject)+1;
 			logger.info("Updating option with latest revision :: {}",revison);
@@ -118,12 +123,13 @@ public class RandomGraphTest {
 			assertEquals(AditazzConstants.COMPLETED_STATUS, aditazzService.generatePlan(UrlConstants.PLAN_PUT_URL+"&project_id="+aditazz.getProjectId(), aditazz.getAuthToken(),aditazz.getOptionId()) );
 			logger.info("Getting plan for id :: {}",aditazz.getPlanId());
 			JsonObject planObject=aditazzService.getPlan(aditazz);
+			fileUtil.createFile(path, planObject.toString(), "new_plan");
 			logger.info("Validating plan and pfd");
 			Map<String,Boolean> result=validator.validatePlanAndPfd(pfdObject, planObject, updatedLib);
 			assertEquals("Equipments are equal.",true,result.get(AditazzConstants.EQUIPMENT_EQUAL).booleanValue() );
 			assertEquals("Lines are equal.",true,result.get(AditazzConstants.LINES_EQUAL).booleanValue() );
 			assertEquals("Valid space exists.",true,result.get(AditazzConstants.VALID_DISTANCE).booleanValue() );
-			FileUtil.createFile();
+			
 			System.out.println("Completed pfd and plan validation..........");
 			logger.info("Process ended with Option id :: {}\t ",entry.getKey());
 			
