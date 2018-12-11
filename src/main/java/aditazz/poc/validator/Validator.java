@@ -2,6 +2,8 @@ package aditazz.poc.validator;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -16,8 +18,6 @@ import com.google.gson.JsonObject;
 
 import aditazz.poc.constants.AditazzConstants;
 import aditazz.poc.dto.PlanEquipment;
-import aditazz.poc.dto.PlanLine;
-import aditazz.poc.dto.PlanMapping;
 import aditazz.poc.enums.JsonFields;
 import aditazz.poc.service.EquipmentService;
 import aditazz.poc.util.DistanceUtil;
@@ -103,14 +103,17 @@ public class Validator {
 			Set<Map.Entry<String,JsonElement>> planChildset=planPathsObject.entrySet();
 			for (Entry<String, JsonElement> pfdEntry : pfdChildset) {
 				JsonObject lineObject=pfdEntry.getValue().getAsJsonObject();
+				String lineID=lineObject.get(JsonFields.ID.getValue()).getAsString();
 				boolean isExistLine=false;
 				for (Entry<String, JsonElement> planEntry : planChildset) {
-					if(lineObject.get(JsonFields.ID.getValue()).getAsString().equals(planEntry.getKey())) {
+					if(lineID.equals(planEntry.getKey())) {
+						logger.info("Line exists in pfd and plan with id  ::{}",planEntry.getKey());
 						isExistLine=true;
 						break;
 					}
 				}
 				if(!isExistLine) {
+					logger.info("Line is not exists in plan with id  :: {}",lineID);
 					isEqual=false;
 					break;
 				}
@@ -148,8 +151,11 @@ public class Validator {
 			for (String pfdEquipName: pfdChildset) {
 				String pfdEquipmentId=pfdEquipmentObject.get(pfdEquipName).getAsJsonObject().get(JsonFields.ID.getValue()).getAsString();
 				if(!planChildset.contains(pfdEquipmentId)) {
+					logger.info("Equipment is not exists in plan with id  ::{}",pfdEquipmentId);
 					isValid=false;
 					break;
+				}else {
+					logger.info("Equipment exists in pfd and plan with id  ::{}",pfdEquipmentId);
 				}
 				
 			}
@@ -195,68 +201,62 @@ public class Validator {
     	Gson gson=new Gson();
     	boolean isValid=true;
     	EquipmentService equipmentService=new EquipmentService();
-    	JsonObject pathObject=planPayload.getAsJsonObject(JsonFields.PATHS.getValue());
     	JsonObject planEquipments=planPayload.getAsJsonObject(JsonFields.EQUIPMENT.getValue());
     	JsonObject pfdEquipment=pfdObject.getAsJsonObject(JsonFields.EQUIPMENT.getValue());
     	Map<String,JsonObject> spacingTable=equipmentService.getSpacingTableFromLib(equipmentLib);
-    	
-    	Set<String> lineIds=pathObject.keySet();
     	DistanceUtil distanceUtil=new DistanceUtil();
-    	for (String lineId :lineIds) {
-    		PlanLine planLine=objectMapper.readValue(gson.toJson(pathObject.get(lineId)), PlanLine.class);
-    		PlanMapping source=planLine.getSource();
-    		PlanMapping target=planLine.getTarget();
-    		String sourceType=getEquipmentType(pfdEquipment, source.getId());
-    		String targetType=getEquipmentType(pfdEquipment, target.getId());
-    		PlanEquipment sourceEquip=objectMapper.readValue(gson.toJson(planEquipments.get(source.getId())),PlanEquipment.class);
-    		PlanEquipment targetEquip=objectMapper.readValue(gson.toJson(planEquipments.get(target.getId())),PlanEquipment.class);
-    		
-    		//A -> B or B -> A same distance should be there. In spacing table either A->B or B->A will be there.  
-    		if(spacingTable.containsKey(sourceType) || spacingTable.containsKey(targetType)) {
-    			double shortestDistance=distanceUtil.getShortestDistance(sourceType, targetType, spacingTable);
-    			Map<String,Double> distances=distanceUtil.calculateDistance(sourceEquip, targetEquip);
-    			double x=distances.get(JsonFields.X.getValue());
-    			double y=distances.get(JsonFields.Y.getValue());
-    			double z=distances.get(JsonFields.Z.getValue());
-    			logger.info("Source type :: {} to target type :: {} spacing table distance is :: {} and plan distance X is :: {} Y is ::{} and Z is ::{} ",sourceType,targetType,shortestDistance,x,y,z);
-    			
-    			if(x < shortestDistance && y < shortestDistance && z < shortestDistance) {    			
-    				logger.info("Invalid distance found between source type :: {} and target type :: {}",sourceType,targetType);
+    	Map<String,String> equipments=getListOfEquipmentTypes(pfdEquipment);
+    	List<String>  equipmentTypes=new LinkedList<>(equipments.keySet());
+    	//A -> B or B -> A same distance should be there. In spacing table either A->B or B->A will be there.
+    	for(int i=0;i<equipmentTypes.size();i++) {
+    		String sourceType=equipmentTypes.get(i);
+    		PlanEquipment sourceEquip=objectMapper.readValue(gson.toJson(planEquipments.get(equipments.get(sourceType))),PlanEquipment.class);
+    		for (int j=i;j<equipmentTypes.size();j++) {
+    			String targetType=equipmentTypes.get(j);
+    			PlanEquipment targetEquip=objectMapper.readValue(gson.toJson(planEquipments.get(equipments.get(targetType))),PlanEquipment.class);
+    			if(spacingTable.containsKey(sourceType) || spacingTable.containsKey(targetType)) {
+        			double shortestDistance=distanceUtil.getShortestDistance(sourceType, targetType, spacingTable);
+        			Map<String,Double> distances=distanceUtil.calculateDistance(sourceEquip, targetEquip);
+        			double x=distances.get(JsonFields.X.getValue());
+        			double y=distances.get(JsonFields.Y.getValue());
+        			double z=distances.get(JsonFields.Z.getValue());
+        			logger.info("Source type :: {} to target type :: {} spacing table distance is :: {} and plan distance X is :: {} Y is ::{} and Z is ::{} ",sourceType,targetType,shortestDistance,x,y,z);
+        			
+        			if(x < shortestDistance && y < shortestDistance && z < shortestDistance) {    			
+        				logger.info("Invalid distance found between source type :: {} and target type :: {}",sourceType,targetType);
+        				isValid=false;
+        				break;
+        			}
+        		}else {
+        			logger.info("Invalid distance found between source type :: {} and target type :: {}",sourceType,targetType);
     				isValid=false;
     				break;
-    			}
-    		}else {
-    			logger.info("Invalid distance found between source type :: {} and target type :: {}",sourceType,targetType);
-				isValid=false;
-				break;
+        		}
     		}
     	}
     	return isValid;
     }
     
+    
     /**
      * 
-     * @name : getEquipmentType
-     * @description : The Method "getEquipmentType" is used for getting equipment type.
-     * @date : 10-Dec-2018 10:57:00 AM
-     * @param equipmentObj
-     * @param id
+     * @name : getListOfEquipmentTypes
+     * @description : The Method "getListOfEquipmentTypes" is used for getting equipment Types and ids.
+     * @date : 11-Dec-2018 1:07:29 PM
+     * @param jsonObject
      * @return
-     * @return : String
+     * @return : Map<String,String>
      *
      */
-    private String getEquipmentType(JsonObject equipmentObj,String id) {
-    	String type=null;
-    	for (String key : equipmentObj.keySet()) {
-    		JsonObject equipment=equipmentObj.get(key).getAsJsonObject();
-    		if(equipment.get(JsonFields.ID.getValue()).getAsString().equals(id)) {
-    			type=equipment.get(JsonFields.TYPE.getValue()).getAsString();
-    			break;
-    		}
+    private Map<String,String> getListOfEquipmentTypes(JsonObject jsonObject){
+    	Map<String,String> types=new HashMap<>();
+    	Set<Map.Entry<String,JsonElement>> planChildset=jsonObject.entrySet();
+    	for(Entry<String , JsonElement> entry : planChildset) {
+    		JsonObject equipment=entry.getValue().getAsJsonObject();
+    		types.put(equipment.get(JsonFields.TYPE.getValue()).getAsString(),equipment.get(JsonFields.ID.getValue()).getAsString());
     	}
-    	return type;
+    	return types;
     }
-    
     
     
 }

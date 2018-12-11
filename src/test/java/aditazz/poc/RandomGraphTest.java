@@ -24,6 +24,7 @@ import aditazz.poc.service.AditazzService;
 import aditazz.poc.service.AuthenticationService;
 import aditazz.poc.service.EquipmentService;
 import aditazz.poc.service.RandomGraphGenerator;
+import aditazz.poc.util.FileUtil;
 import aditazz.poc.util.JsonReader;
 import aditazz.poc.validator.Validator;
 import junit.framework.TestCase;
@@ -93,7 +94,7 @@ public class RandomGraphTest {
 			logger.info("Generating random graph.........!");
 			equipmentLib=equipmentService.getEquipments(aditazz);
 			logger.info("Before updating equipment library json is :: {}",equipmentLib);
-			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(aditazz, 10, 9);
+			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(aditazz, 3, 2);
 			JsonObject updatedLib=equipmentService.getEquipments(aditazz);
 			logger.info("After updating equipment library json is :: {}",updatedLib);
 			int revision=equipmentService.getRevisonNumber(aditazz);
@@ -122,7 +123,7 @@ public class RandomGraphTest {
 			assertEquals("Equipments are equal.",true,result.get(AditazzConstants.EQUIPMENT_EQUAL).booleanValue() );
 			assertEquals("Lines are equal.",true,result.get(AditazzConstants.LINES_EQUAL).booleanValue() );
 			assertEquals("Valid space exists.",true,result.get(AditazzConstants.VALID_DISTANCE).booleanValue() );
-			
+			FileUtil.createFile();
 			System.out.println("Completed pfd and plan validation..........");
 			logger.info("Process ended with Option id :: {}\t ",entry.getKey());
 			
