@@ -116,7 +116,7 @@ public class RandomGraphTest {
 			fileUtil.createFile(path, pfdObject.toString(), "updated_pfd");
 			
 			int revison=new JsonReader().getPfdRevision(pfdObject)+1;
-			logger.info("Updating option with latest revision :: {}",revison);
+			logger.info("Updating option with latest revision of pfd :: {}",revison);
 			assertEquals(true,aditazzService.updateOptionRevison(aditazz, revison) != null);
 			
 			logger.info("Generating plan for id :: {}",aditazz.getPlanId());

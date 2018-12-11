@@ -107,7 +107,7 @@ public class Validator {
 				boolean isExistLine=false;
 				for (Entry<String, JsonElement> planEntry : planChildset) {
 					if(lineID.equals(planEntry.getKey())) {
-						logger.info("Line exists in pfd and plan with id  ::{}",planEntry.getKey());
+						logger.info("Pfd line id :: {} and Plan line id  ::{}",lineID,planEntry.getKey());
 						isExistLine=true;
 						break;
 					}
@@ -141,21 +141,27 @@ public class Validator {
 			JsonObject planEquipmentObj=planPayloadObject.getAsJsonObject(JsonFields.EQUIPMENT.getValue());
 	    	
 	    	JsonObject pfdEquipmentObject=pfdPayloadObject.getAsJsonObject(JsonFields.EQUIPMENT.getValue());
-			Set<String> planChildset=planEquipmentObj.keySet();
-			Set<String> pfdChildset=pfdEquipmentObject.keySet();
+	    	Set<Map.Entry<String,JsonElement>> planChildset=planEquipmentObj.entrySet();
+	    	Set<Map.Entry<String,JsonElement>> pfdChildset=pfdEquipmentObject.entrySet();
 			// Equipment Size comparison
 			logger.info("Number of equipments of plan is :: {}",planChildset.size());
 			logger.info("Number of equipments of pfd is :: {}",pfdChildset.size());
 			
 				
-			for (String pfdEquipName: pfdChildset) {
-				String pfdEquipmentId=pfdEquipmentObject.get(pfdEquipName).getAsJsonObject().get(JsonFields.ID.getValue()).getAsString();
-				if(!planChildset.contains(pfdEquipmentId)) {
+			for (Entry<String, JsonElement> pfdEquipment: pfdChildset) {
+				String pfdEquipmentId=pfdEquipment.getValue().getAsJsonObject().get(JsonFields.ID.getValue()).getAsString();
+				boolean isExists=false;
+				for (Entry<String, JsonElement> planEntry : planChildset) {
+					if(pfdEquipmentId.equals(planEntry.getKey())) {
+						logger.info("Pfd equipment id :: {} and Plan equipment id  ::{}",pfdEquipmentId,planEntry.getKey());
+						isExists=true;
+						break;
+					}
+				}
+				if(!isExists) {
 					logger.info("Equipment is not exists in plan with id  ::{}",pfdEquipmentId);
 					isValid=false;
 					break;
-				}else {
-					logger.info("Equipment exists in pfd and plan with id  ::{}",pfdEquipmentId);
 				}
 				
 			}
