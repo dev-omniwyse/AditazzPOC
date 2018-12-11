@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class FileUtil {
 	public static void createFile() throws IOException {
-		 File f=new File("/home/ubuntu/aditazz/abc.txt");
+		 File f=new File("/var/lib/jenkins/workspace/abc.txt");
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(f)))
 		{
 		    writer.write("Hello World !!");
