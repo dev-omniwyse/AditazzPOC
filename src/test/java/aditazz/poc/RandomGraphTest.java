@@ -108,7 +108,7 @@ public class RandomGraphTest {
 			
 			
 			pfdObject.add(JsonFields.PAYLOAD.getValue(), payloadObj);
-			logger.info("After generating random graph pfd json is :: {}",payloadObj);
+			//logger.info("After generating random graph pfd json is :: {}",payloadObj);
 			
 			
 			logger.info("Updating random graph pfd json :: {}",aditazz.getPfdId());

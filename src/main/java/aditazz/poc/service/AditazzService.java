@@ -324,7 +324,7 @@ public class AditazzService {
 		JsonObject revison=equipmentJson.get(JsonFields.REVISON.getValue()).getAsJsonObject();
 		revison.add(JsonFields.ID.getValue(), new Gson().toJsonTree(number));
 		JsonObject response=RestUtil.putObject(aditazz.getAuthToken(),projectJson, UrlConstants.PROJECT_URL+aditazz.getProjectId());
-		logger.info("After updating project json the response json is :: {}",response);
+		//logger.info("After updating project json the response json is :: {}",response)
 		return response != null;
 		
 	}
