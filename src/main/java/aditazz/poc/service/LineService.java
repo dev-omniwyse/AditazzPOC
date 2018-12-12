@@ -63,7 +63,7 @@ public class LineService {
 		LineSource lineSource=new LineSource();
         lineSource.setUuid(sourceUuid);
         lineSource.setSide(sourceSide);
-        lineSource.setType("equipment");
+        lineSource.setType(JsonFields.EQUIPMENT.getValue());
         lineSource.setPosition(new Double[] {0d,0d});
         lineSource.setNozzle(sourceUuid+sourceSide+"1");
         return lineSource;
@@ -83,11 +83,10 @@ public class LineService {
 		LineTarget lineTarget=new LineTarget();
 		lineTarget.setUuid(targetUuid);
 		lineTarget.setSide(targetSide);
-		lineTarget.setType("equipment");
+		lineTarget.setType(JsonFields.EQUIPMENT.getValue());
 		lineTarget.setPosition(new Double[] {0d,0d});
 		lineTarget.setNozzle(targetUuid+targetSide+"1");
 		return lineTarget;
-		
 	}
 	
 	
