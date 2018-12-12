@@ -28,38 +28,7 @@ import aditazz.poc.validator.Validator;
 public class AditazzService {
 	private static final Logger logger = LoggerFactory.getLogger(AditazzService.class);
 	
-	/**
-	 * 
-	 * @name : processPFD
-	 * @description : The Method "processPFD" is used for update pfd and validate pfd.
-	 * @date : 27-Nov-2018 4:54:49 PM
-	 * @param aditazz
-	 * @return : void
-	 *
-	 */
-	public void processPFD(Aditazz aditazz) {
-		try {
-			EquipmentService equipmentService=new EquipmentService();
-			JsonReader jsonReader=new JsonReader();
-			logger.info("Authentication token : {}" , aditazz.getAuthToken());
-			aditazz=getPlanAndOptionId(aditazz);
-			
-			logger.info("Pfd id :: {} \t Plan id :: {}",aditazz.getPfdId(),aditazz.getPlanId());
-			JsonObject equimentLib=equipmentService.getEquipments(aditazz);
-			JsonObject pfdObject=getPfdObject(aditazz);
-			processPFDAndPlan(aditazz, pfdObject,equimentLib);
-		
-			logger.info("Validation Completed without updating pfd.............................!");
-			JsonObject newPfdObject=jsonReader.getPfdObject("/"+aditazz.getOptionId()+"_newpfd.json");
-			logger.info("Updating pfd :::: {}",newPfdObject);
-			JsonObject jsonRes=updatePFD( newPfdObject,aditazz);
-			logger.info("Update pfd response is :: {}",jsonRes);
-			processPFDAndPlan(aditazz, newPfdObject,equimentLib);
-
-		}  catch (Exception e) {
-			logger.error("Exception occured due to :: "+e.getMessage(),e);
-		}
-	}
+	
 	/**
 	 * 
 	 * @name : processPFDAndPlan
