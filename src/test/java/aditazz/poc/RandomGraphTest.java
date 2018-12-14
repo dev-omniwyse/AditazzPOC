@@ -89,39 +89,28 @@ public class RandomGraphTest {
 	@Test
 	public void validateRandomGraph() throws IOException {
 		for(Entry<Object, Object> entry : optionIds.entrySet()) {
-			logger.info("Process started with Option id :: {}\t ",entry.getKey());
+			logger.info("Process started with Option id :: {} ",entry.getKey());
 			aditazz.setOptionId(entry.getKey().toString());
 			aditazz=aditazzService.getLibraryIds(aditazz);
 			aditazz=aditazzService.getPlanAndOptionId(aditazz);
+			
+			
 			JsonObject pfdObject=aditazzService.getPfdObject(aditazz);
-			//logger.info("Before generating random graph pfd json is ::{}",pfdObject);
-			logger.info("Generating random graph.........!");
 			equipmentLib=equipmentService.getEquipments(aditazz);
-			//logger.info("Before updating equipment library json is :: {}",equipmentLib);
 			JsonObject payloadObj=randomGraphGenerator.generateRandomGraph(aditazz, 10, 9);
 			JsonObject updatedLib=equipmentService.getEquipments(aditazz);
-			//logger.info("After updating equipment library json is :: {}",updatedLib);
 			fileUtil.createFile(path, updatedLib.toString(), "updated_equipment_library");
 			int revision=equipmentService.getRevisonNumber(aditazz);
-			logger.info("Updating equipment revison in projects :: {}",revision);
 			assertEquals(true, aditazzService.updateProjectEquipLibRevison(revision, aditazz));
-			
-			
 			pfdObject.add(JsonFields.PAYLOAD.getValue(), payloadObj);
-			//logger.info("After generating random graph pfd json is :: {}",payloadObj);
-			
-			
-			logger.info("Updating random graph pfd json :: {}",aditazz.getPfdId());
 			assertEquals(true, aditazzService.updatePFD(pfdObject, aditazz) != null);
 			fileUtil.createFile(path, pfdObject.toString(), "updated_pfd");
 			
 			int revison=new JsonReader().getPfdRevision(pfdObject)+1;
-			logger.info("Updating option with latest revision of pfd :: {}",revison);
 			assertEquals(true,aditazzService.updateOptionRevison(aditazz, revison) != null);
 			
-			logger.info("Generating plan for id :: {}",aditazz.getPlanId());
+			
 			assertEquals(AditazzConstants.COMPLETED_STATUS, aditazzService.generatePlan(UrlConstants.PLAN_PUT_URL+"&project_id="+aditazz.getProjectId(), aditazz.getAuthToken(),aditazz.getOptionId()) );
-			logger.info("Getting plan for id :: {}",aditazz.getPlanId());
 			JsonObject planObject=aditazzService.getPlan(aditazz);
 			fileUtil.createFile(path, planObject.toString(), "new_plan");
 			logger.info("Validating plan and pfd");
@@ -130,11 +119,10 @@ public class RandomGraphTest {
 			assertEquals("Lines are equal.",true,result.get(AditazzConstants.LINES_EQUAL).booleanValue() );
 			assertEquals("Valid space exists.",true,result.get(AditazzConstants.VALID_DISTANCE).booleanValue() );
 			
-			System.out.println("Completed pfd and plan validation..........");
 			logger.info("Process ended with Option id :: {}\t ",entry.getKey());
 			
 		}
-		
+		logger.info("Completed pfd and plan validation..........");
 		
 	}
 	/*@AfterClass

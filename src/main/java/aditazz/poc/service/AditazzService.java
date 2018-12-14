@@ -61,6 +61,7 @@ public class AditazzService {
 	 *
 	 */
 	public JsonObject getPlan(Aditazz aditazz) {
+		logger.info("Getting plan for id :: {}",aditazz.getPlanId());
 		return RestUtil.getObject(aditazz.getAuthToken(), null, UrlConstants.PLAN_URL+aditazz.getPlanId());
 	}
 	
@@ -77,6 +78,7 @@ public class AditazzService {
 	 *
 	 */
 	public String generatePlan(String url, String authToken,String optionId) {
+		logger.info("Generating plan for option :: {}",optionId);
 		JsonObject emptyEquipment=getEmptyEquipment();
 		JsonObject output = RestUtil.putObject(authToken,emptyEquipment,url+"&option_id="+optionId);
 		String ticketId=output.get(JsonFields.ID.getValue()).getAsString();
@@ -140,6 +142,7 @@ public class AditazzService {
 	 *
 	 */
 	public JsonObject updatePFD(JsonObject pfdObject,Aditazz aditazz) {
+		logger.info("Updating random graph pfd json :: {}",aditazz.getPfdId());
 		return RestUtil.putObject(aditazz.getAuthToken(), pfdObject, UrlConstants.PFD_URL+aditazz.getPfdId());
 	}
 	/**
@@ -254,20 +257,21 @@ public class AditazzService {
 	 * @description : The Method "updateOptionRevison" is used for updating option revision number. 
 	 * @date : 06-Dec-2018 10:00:13 AM
 	 * @param aditazz
-	 * @param number
+	 * @param revisionNum
 	 * @return : void
 	 *
 	 */
-	public JsonObject updateOptionRevison(Aditazz aditazz,int number) {
+	public JsonObject updateOptionRevison(Aditazz aditazz,int revisionNum) {
 		JsonObject jsonObject=RestUtil.getObject(aditazz.getAuthToken(), null, UrlConstants.OPTIONS_URL+aditazz.getOptionId());
 		JsonObject optionJson=jsonObject.get(JsonFields.OPTIONS.getValue()).getAsJsonArray().get(0).getAsJsonObject();
 		JsonObject payloadObj=optionJson.get(JsonFields.PAYLOAD.getValue()).getAsJsonObject();
 		JsonObject pfdJson=payloadObj.get(JsonFields.PFD.getValue()).getAsJsonObject();
 		JsonObject revison=pfdJson.get(JsonFields.REVISON.getValue()).getAsJsonObject();
-		revison.add(JsonFields.ID.getValue(), new Gson().toJsonTree(number));
+		revison.add(JsonFields.ID.getValue(), new Gson().toJsonTree(revisionNum));
 		pfdJson.add(JsonFields.REVISON.getValue(), revison);
 		payloadObj.add(JsonFields.PFD.getValue(), pfdJson);
 		optionJson.add(JsonFields.PAYLOAD.getValue(), payloadObj);
+		logger.info("Updating option with latest revision of pfd :: {}",revisionNum);
 		//logger.info("Updated option json :: {}",optionJson);
 		JsonObject response=RestUtil.putObject(aditazz.getAuthToken(), optionJson, UrlConstants.OPTIONS_URL+aditazz.getOptionId());
 		//logger.info("After updating option the response is :: {}",response);
@@ -279,19 +283,20 @@ public class AditazzService {
 	 * @name : updateProjectEquipLibRevison
 	 * @description : The Method "updateProjectEquipLibRevison" is used for updating equipment library revision number in projects.
 	 * @date : 06-Dec-2018 4:10:09 PM
-	 * @param number
+	 * @param revisionNumber
 	 * @param aditazz
 	 * @return
 	 * @return : boolean
 	 *
 	 */
-	public boolean updateProjectEquipLibRevison(int number,Aditazz aditazz) {
+	public boolean updateProjectEquipLibRevison(int revisionNumber,Aditazz aditazz) {
 		JsonObject jsonObject=RestUtil.getObject(aditazz.getAuthToken(), null, UrlConstants.PROJECT_URL+aditazz.getProjectId());
 		JsonObject projectJson=jsonObject.get(JsonFields.PROJECTS.getValue()).getAsJsonArray().get(0).getAsJsonObject();
 		JsonObject payloadObj=projectJson.get(JsonFields.PAYLOAD.getValue()).getAsJsonObject();
 		JsonObject equipmentJson=payloadObj.get(JsonFields.EQUIPMENT_LIBRARY.getValue()).getAsJsonObject();
 		JsonObject revison=equipmentJson.get(JsonFields.REVISON.getValue()).getAsJsonObject();
-		revison.add(JsonFields.ID.getValue(), new Gson().toJsonTree(number));
+		revison.add(JsonFields.ID.getValue(), new Gson().toJsonTree(revisionNumber));
+		logger.info("Updating equipment revison in projects :: {}",revisionNumber);
 		JsonObject response=RestUtil.putObject(aditazz.getAuthToken(),projectJson, UrlConstants.PROJECT_URL+aditazz.getProjectId());
 		//logger.info("After updating project json the response json is :: {}",response)
 		return response != null;
