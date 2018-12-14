@@ -213,7 +213,7 @@ public class Validator {
     	DistanceUtil distanceUtil=new DistanceUtil();
     	Map<String,String> equipments=getListOfEquipmentTypes(pfdEquipment);
     	List<String>  equipmentTypes=new LinkedList<>(equipments.keySet());
-    	//A -> B or B -> A same distance should be there. In spacing table either A->B or B->A will be there.
+    	//A -> B or B -> A same distance should be there. In spacing table consider either A->B or B->A.
     	for(int i=0;i<equipmentTypes.size();i++) {
     		String sourceType=equipmentTypes.get(i);
     		PlanEquipment sourceEquip=objectMapper.readValue(gson.toJson(planEquipments.get(equipments.get(sourceType))),PlanEquipment.class);
