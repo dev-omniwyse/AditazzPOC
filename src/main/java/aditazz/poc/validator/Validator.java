@@ -120,6 +120,7 @@ public class Validator {
 			}
 		} catch (Exception e) {
 			logger.error("Exception occurred while validating lines "+e.getMessage(),e);
+			isEqual=false;
 		}
 		return isEqual;
 	}
