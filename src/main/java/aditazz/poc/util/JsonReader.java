@@ -106,7 +106,16 @@ public class JsonReader {
 		}
 		return jobject;
 	}
-	
+	/**
+	 * 
+	 * @name : getPfdRevision
+	 * @description : The Method "getPfdRevision" is used for getting revision number. 
+	 * @date : 15-Dec-2018 11:34:10 AM
+	 * @param jsonObject
+	 * @return
+	 * @return : int
+	 *
+	 */
 	public int getPfdRevision(JsonObject jsonObject) {
 		JsonObject revisonObj=jsonObject.get(JsonFields.REVISON.getValue()).getAsJsonObject();
 		return Integer.parseInt(revisonObj.get(JsonFields.ID.getValue()).getAsString());
