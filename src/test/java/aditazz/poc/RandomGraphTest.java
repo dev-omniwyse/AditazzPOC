@@ -14,19 +14,19 @@ import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aditazz.constants.AditazzConstants;
+import com.aditazz.constants.UrlConstants;
+import com.aditazz.enums.JsonFields;
+import com.aditazz.model.Aditazz;
+import com.aditazz.service.AditazzService;
+import com.aditazz.service.AuthenticationService;
+import com.aditazz.service.EquipmentService;
+import com.aditazz.service.RandomGraphGenerator;
+import com.aditazz.util.FileUtil;
+import com.aditazz.util.JsonReader;
+import com.aditazz.validator.Validator;
 import com.google.gson.JsonObject;
 
-import aditazz.poc.constants.AditazzConstants;
-import aditazz.poc.constants.UrlConstants;
-import aditazz.poc.dto.Aditazz;
-import aditazz.poc.enums.JsonFields;
-import aditazz.poc.service.AditazzService;
-import aditazz.poc.service.AuthenticationService;
-import aditazz.poc.service.EquipmentService;
-import aditazz.poc.service.RandomGraphGenerator;
-import aditazz.poc.util.FileUtil;
-import aditazz.poc.util.JsonReader;
-import aditazz.poc.validator.Validator;
 import junit.framework.TestCase;
 
 /**
@@ -87,7 +87,7 @@ public class RandomGraphTest {
 	 *
 	 */
 	@Test
-	public void validateRandomGraph() throws IOException {
+	public void validateRandomGraph() throws IOException {/*
 		for(Entry<Object, Object> entry : optionIds.entrySet()) {
 			logger.info("Process started with Option id :: {} ",entry.getKey());
 			aditazz.setOptionId(entry.getKey().toString());
@@ -122,7 +122,7 @@ public class RandomGraphTest {
 			logger.info("Process ended with Option id :: {}\t ",entry.getKey());
 			
 		}
-		logger.info("Completed pfd and plan validation..........");
+		logger.info("Completed pfd and plan validation..........");*/
 		
 	}
 	/*@AfterClass
